@@ -1,8 +1,8 @@
 <script setup>
-
 import { onBeforeMount, ref, computed, inject } from 'vue'
 import Login from './components/Login.vue'
 import Dashboard from './components/Dashboard.vue'
+import Header from './components/Header.vue'
 
 const axios = inject('axios')
 const _token = ref('')
@@ -11,66 +11,42 @@ const loginEnabled = computed(() => {
   return _token.value.length > 0
 })
 
-const loginSucceded = (token)=>{
+const loginSucceded = (token) => {
   axios.interceptors.request.use(
-        (config) => {
-            
-            const token = localStorage.getItem('token');
-            if (token) {
-                    config.headers['Authorization'] = `Bearer ${token}`;
-                }
-    
-                return config;
-            },
-    
-            (error) => {
-                return Promise.reject(error);
-            }
-        );
-        
+    (config) => {
+      const token = localStorage.getItem('token')
+      if (token) {
+        config.headers['Authorization'] = `Bearer ${token}`
+      }
 
-    localStorage.setItem('token', token)
-    _token.value = token
-  
+      return config
+    },
+
+    (error) => {
+      return Promise.reject(error)
+    }
+  )
+
+  localStorage.setItem('token', token)
+  _token.value = token
+}
+
+
+const logout = () => {
+  localStorage.removeItem('token')
+  _token.value = ''
 }
 
 onBeforeMount(() => {
-  if (localStorage){
-     _token.value = localStorage.getItem('token') || ''
+  if (localStorage) {
+    _token.value = localStorage.getItem('token') || ''
   }
 })
-
 </script>
 <template>
-    <Login v-if="!loginEnabled" @loginSucceded="loginSucceded"/>
-    <Dashboard v-else />
+  <Header v-if="loginEnabled" @logout="logout"/>
+  <Login v-if="!loginEnabled" @loginSucceded="loginSucceded" />
+  <Dashboard v-else />
 </template>
 
-<style scoped>
-header {
-  line-height: 1.5;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-}
-</style>
+<style scoped></style>
