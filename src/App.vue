@@ -1,20 +1,49 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
+
+import { onBeforeMount, ref, computed, inject } from 'vue'
+import Login from './components/Login.vue'
+import Dashboard from './components/Dashboard.vue'
+
+const axios = inject('axios')
+const _token = ref('')
+
+const loginEnabled = computed(() => {
+  return _token.value.length > 0
+})
+
+const loginSucceded = (token)=>{
+  axios.interceptors.request.use(
+        (config) => {
+            
+            const token = localStorage.getItem('token');
+            if (token) {
+                    config.headers['Authorization'] = `Bearer ${token}`;
+                }
+    
+                return config;
+            },
+    
+            (error) => {
+                return Promise.reject(error);
+            }
+        );
+        
+
+    localStorage.setItem('token', token)
+    _token.value = token
+  
+}
+
+onBeforeMount(() => {
+  if (localStorage){
+     _token.value = localStorage.getItem('token') || ''
+  }
+})
+
 </script>
-
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-    </div>
-  </header>
-
-  <main>
-    <TheWelcome />
-  </main>
+    <Login v-if="!loginEnabled" @loginSucceded="loginSucceded"/>
+    <Dashboard v-else />
 </template>
 
 <style scoped>
