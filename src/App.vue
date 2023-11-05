@@ -17,14 +17,9 @@ const loginSucceded = (token) => {
 
   localStorage.setItem('token', token)
   _token.value = token
-
-  axios.get('/vcard').then((response) => {
-    console.log(response.data)
-  })
 }
 
 const logout = () => {
-  //todo: axios.delete token
   axios.post(config.logout).then((response) => {
     console.log(response.data)
     delete axios.defaults.headers.common.Authorization
