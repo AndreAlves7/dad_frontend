@@ -35,7 +35,11 @@ const logout = () => {
 
 onBeforeMount(() => {
   if (localStorage) {
-    _token.value = localStorage.getItem('token') || ''
+    const token = localStorage.getItem('token') || ''
+    if (token.length > 0) {
+      axios.defaults.headers.common.Authorization = 'Bearer ' + token
+      _token.value = token
+    }
   }
 })
 </script>
