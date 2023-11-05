@@ -27,11 +27,10 @@ const logout = () => {
   //todo: axios.delete token
   axios.post(config.logout).then((response) => {
     console.log(response.data)
+    delete axios.defaults.headers.common.Authorization
+    localStorage.removeItem('token')
+    _token.value = ''
   })
-
-  delete axios.defaults.headers.common.Authorization
-  localStorage.removeItem('token')
-  _token.value = ''
 }
 
 onBeforeMount(() => {
