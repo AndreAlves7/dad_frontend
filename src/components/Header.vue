@@ -4,12 +4,9 @@
 </template>
 
 <script setup>
+const emit = defineEmits(['logout'])
 
-import { ref } from 'vue'
-
-  const emit = defineEmits(['logout'])
-  
-  const logout = () => {
-    emit('logout')
-  }
+const logout = () => {
+  emit('logout')
+}
 </script>

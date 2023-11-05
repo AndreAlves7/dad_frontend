@@ -3,6 +3,7 @@ import { onBeforeMount, ref, computed, inject } from 'vue'
 import Login from './components/Login.vue'
 import Dashboard from './components/Dashboard.vue'
 import Header from './components/Header.vue'
+import config from './utils/config'
 
 const axios = inject('axios')
 const _token = ref('')
@@ -12,27 +13,23 @@ const loginEnabled = computed(() => {
 })
 
 const loginSucceded = (token) => {
-  axios.interceptors.request.use(
-    (config) => {
-      const token = localStorage.getItem('token')
-      if (token) {
-        config.headers['Authorization'] = `Bearer ${token}`
-      }
-
-      return config
-    },
-
-    (error) => {
-      return Promise.reject(error)
-    }
-  )
+  axios.defaults.headers.common.Authorization = 'Bearer ' + token
 
   localStorage.setItem('token', token)
   _token.value = token
+
+  axios.get('/vcard').then((response) => {
+    console.log(response.data)
+  })
 }
 
-
 const logout = () => {
+  //todo: axios.delete token
+  axios.post(config.logout).then((response) => {
+    console.log(response.data)
+  })
+
+  delete axios.defaults.headers.common.Authorization
   localStorage.removeItem('token')
   _token.value = ''
 }
@@ -44,7 +41,7 @@ onBeforeMount(() => {
 })
 </script>
 <template>
-  <Header v-if="loginEnabled" @logout="logout"/>
+  <Header v-if="loginEnabled" @logout="logout" />
   <Login v-if="!loginEnabled" @loginSucceded="loginSucceded" />
   <Dashboard v-else />
 </template>

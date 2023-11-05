@@ -15,15 +15,20 @@ const emit = defineEmits(['loginSucceded'])
 
 const username = ref('a1@mail.pt')
 const password = ref('123')
-const responseData = ref('')
 
 const login = async () => {
-  const responseLogin = await axios.post(config.login, {
-    username: username.value,
-    password: password.value
-  })
+  try {
+    const responseLogin = await axios.post(config.login, {
+      username: username.value,
+      password: password.value
+    })
 
-  emit('loginSucceded', responseLogin.data.access_token)
+    console.log(responseLogin.data)
+
+    emit('loginSucceded', responseLogin.data.access_token)
+  } catch (error) {
+    alert('Login failed')
+  }
 
   // const responseRequest = await axios.get('/vcard')
 
