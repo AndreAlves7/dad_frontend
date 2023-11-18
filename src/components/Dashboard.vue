@@ -1,6 +1,5 @@
 <template>
-    <p> Dashboard </p>
+  <p>Dashboard</p>
 </template>
 
-<script setup>
-</script>
+<script setup></script>

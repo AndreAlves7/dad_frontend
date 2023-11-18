@@ -1,8 +1,9 @@
 <script setup>
-
 import { onBeforeMount, ref, computed, inject } from 'vue'
 import Login from './components/Login.vue'
 import Dashboard from './components/Dashboard.vue'
+import Header from './components/Header.vue'
+import config from './utils/config'
 
 const axios = inject('axios')
 const _token = ref('')
@@ -11,68 +12,37 @@ const loginEnabled = computed(() => {
   return _token.value.length > 0
 })
 
-const loginSucceded = (token)=>{
-  axios.interceptors.request.use(
-        (config) => {
-            
-            const token = localStorage.getItem('token');
-            if (token) {
-                    config.headers['Authorization'] = `Bearer ${token}`;
-                }
-    
-                return config;
-            },
-    
-            (error) => {
-                return Promise.reject(error);
-            }
-        );
-        
+const loginSucceded = (token) => {
+  axios.defaults.headers.common.Authorization = 'Bearer ' + token
 
-    localStorage.setItem('token', token)
-    _token.value = token
-  
+  localStorage.setItem('token', token)
+  _token.value = token
+}
+
+const logout = () => {
+  axios.post(config.logout).then((response) => {
+    console.log(response.data)
+    delete axios.defaults.headers.common.Authorization
+    localStorage.removeItem('token')
+    _token.value = ''
+  })
 }
 
 onBeforeMount(() => {
-  if (localStorage){
-     _token.value = localStorage.getItem('token') || ''
+  if (localStorage) {
+    const token = localStorage.getItem('token') || ''
+    if (token.length > 0) {
+      axios.defaults.headers.common.Authorization = 'Bearer ' + token
+      _token.value = token
+    }
   }
 })
-
 </script>
 <template>
-  <div class="container">
-    <Login v-if="!loginEnabled" @loginSucceded="loginSucceded"/>
-    <Dashboard v-else />
+  <Header v-if="loginEnabled" @logout="logout" />
+  <Login v-if="!loginEnabled" @loginSucceded="loginSucceded" />
+  <Dashboard v-else />
   </div>
 </template>
 
-<style scoped>
-header {
-  line-height: 1.5;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-}
-</style>
+<style scoped></style>
