@@ -1,6 +1,6 @@
 import axios from 'axios'
-// import 'bootstrap/dist/css/bootstrap.min.css'
-// import 'bootstrap'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap'
 import config from './utils/config'
 
 import { createApp } from 'vue'

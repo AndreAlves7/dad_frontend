@@ -42,8 +42,10 @@ onBeforeMount(() => {
 
 </script>
 <template>
+  <div class="container">
     <Login v-if="!loginEnabled" @loginSucceded="loginSucceded"/>
     <Dashboard v-else />
+  </div>
 </template>
 
 <style scoped>
