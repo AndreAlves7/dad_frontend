@@ -37,7 +37,7 @@
 </template>
 <script setup>
 import { ref, inject } from 'vue'
-import config from '../utils/config'
+import routes from '../utils/routes'
 const axios = inject('axios')
 //const emits = defineEmits(['loginEvent'])
 
@@ -48,7 +48,7 @@ const password = ref('123')
 
 const login = async () => {
   try {
-    const responseLogin = await axios.post(config.login, {
+    const responseLogin = await axios.post(routes.login, {
       username: username.value,
       password: password.value
     })
