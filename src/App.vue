@@ -42,7 +42,6 @@ onBeforeMount(() => {
   <Header v-if="loginEnabled" @logout="logout" />
   <Login v-if="!loginEnabled" @loginSucceded="loginSucceded" />
   <Dashboard v-else />
-  </div>
 </template>
 
 <style scoped></style>
