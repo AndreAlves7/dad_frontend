@@ -3,7 +3,7 @@ import { onBeforeMount, ref, computed, inject } from 'vue'
 import Login from './components/Login.vue'
 import Dashboard from './components/Dashboard.vue'
 import Header from './components/Header.vue'
-import config from './utils/config'
+import routes from './utils/routes'
 
 const axios = inject('axios')
 const _token = ref('')
@@ -20,7 +20,7 @@ const loginSucceded = (token) => {
 }
 
 const logout = () => {
-  axios.post(config.logout).then((response) => {
+  axios.post(routes.logout).then((response) => {
     console.log(response.data)
     delete axios.defaults.headers.common.Authorization
     localStorage.removeItem('token')

@@ -1,5 +1,3 @@
 export default {
-    baseAPI: "http://localhost/backend/public/api",
-    login: '/auth/login',
-    logout: '/auth/logout'
+    baseAPI: "http://localhost/backend/public/api"
 };
