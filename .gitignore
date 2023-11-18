@@ -28,3 +28,4 @@ coverage
 *.sw?
 
 src/utils/config.js
+.env.development
