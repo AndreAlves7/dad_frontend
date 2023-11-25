@@ -16,8 +16,7 @@ const credentials = ref({
 
 const login = async () => {
   if (await userStore.login(credentials.value)) {
-    console.log()
-    toast.success('User ' + userStore.name + ' has entered the application.')
+    toast.success('User ' + userStore.user.name + ' has entered the application.')
     router.push({ name: 'Dashboard' })
   } else {
     // credentials.value.password = ''
