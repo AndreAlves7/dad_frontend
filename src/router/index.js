@@ -37,6 +37,7 @@ router.beforeEach(async (to, from, next) => {
       next()
       return
     }
+    console.log(userStore)
     if (!userStore.user) {
       next({ name: 'Login' })
       return

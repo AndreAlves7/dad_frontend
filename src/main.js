@@ -13,14 +13,12 @@ import router from './router'
 
 const app = createApp(App)
 
-// const apiDomain = import.meta.env.VITE_API_DOMAIN
+const apiDomain = import.meta.env.VITE_API_DOMAIN
 // const wsConnection = import.meta.env.VITE_WS_CONNECTION
 // app.provide('socket', io(wsConnection))
 
-
-const serverBaseUrl = config.baseAPI
-app.provide('serverBaseUrl', serverBaseUrl)
-axios.defaults.baseURL = serverBaseUrl
+app.provide('serverBaseUrl', apiDomain)
+axios.defaults.baseURL = apiDomain
 axios.defaults.headers.common['Content-type'] = 'application/json'
 
 // default toast configuration
