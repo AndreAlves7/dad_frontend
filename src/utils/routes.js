@@ -1,4 +1,5 @@
 export default {
     login: '/auth/login',
-    logout: '/auth/logout'
+    logout: '/auth/logout',
+    vcard: '/vcard'
 }
