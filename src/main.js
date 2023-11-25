@@ -1,6 +1,7 @@
 import axios from 'axios'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap'
+import { io } from 'socket.io-client'
 
 import Toast from "vue-toastification"
 import "vue-toastification/dist/index.css"
@@ -16,6 +17,9 @@ const app = createApp(App)
 const apiDomain = import.meta.env.VITE_API_DOMAIN
 // const wsConnection = import.meta.env.VITE_WS_CONNECTION
 // app.provide('socket', io(wsConnection))
+const wsConnection = import.meta.env.VITE_WS_CONNECTION
+
+app.provide('socket', io(wsConnection))
 
 app.provide('serverBaseUrl', apiDomain)
 axios.defaults.baseURL = apiDomain
