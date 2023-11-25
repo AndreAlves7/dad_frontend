@@ -2,27 +2,44 @@ import axios from 'axios'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap'
 
+import Toast from "vue-toastification"
+import "vue-toastification/dist/index.css"
+
 import { createApp } from 'vue'
+import { createPinia } from 'pinia'
+
 import App from './App.vue'
+import router from './router'
 
 const app = createApp(App)
 
- const apiDomain = import.meta.env.VITE_API_DOMAIN
-
 // const apiDomain = import.meta.env.VITE_API_DOMAIN
 // const wsConnection = import.meta.env.VITE_WS_CONNECTION
-
 // app.provide('socket', io(wsConnection))
 
-app.provide(
-  'axios',
-  axios.create({
-    baseURL: apiDomain,
-    headers: {
-      'Content-type': 'application/json'
-    }
-  })
-)
-app.provide('serverBaseUrl', apiDomain)
+
+const serverBaseUrl = config.baseAPI
+app.provide('serverBaseUrl', serverBaseUrl)
+axios.defaults.baseURL = serverBaseUrl
+axios.defaults.headers.common['Content-type'] = 'application/json'
+
+// default toast configuration
+app.use(Toast, {
+  position: "top-center",
+  timeout: 3000,
+  closeOnClick: true,
+  pauseOnFocusLoss: true,
+  pauseOnHover: true,
+  draggable: true,
+  draggablePercent: 0.6,
+  showCloseButtonOnHover: true,
+  hideProgressBar: true,
+  closeButton: "button",
+  icon: true,
+  rtl: false
+})
+
+app.use(createPinia())
+app.use(router)
 
 app.mount('#app')
