@@ -9,6 +9,8 @@ import "vue-toastification/dist/index.css"
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 
+import FieldErrorMessage from './components/global/FieldErrorMessage.vue'
+
 import App from './App.vue'
 import router from './router'
 
@@ -43,5 +45,7 @@ app.use(Toast, {
 
 app.use(createPinia())
 app.use(router)
+
+app.component('FieldErrorMessage', FieldErrorMessage)
 
 app.mount('#app')
