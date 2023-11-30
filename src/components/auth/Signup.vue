@@ -48,7 +48,7 @@ const signup = async () => {
     try {
         if(isValidInputs()){
             await axios.post('signup', newUser.value)
-            toast.success(`Congrats, you have a vCard now! Let's begin!`)
+            toast.success('Congrats, you now have a vCard!')
             router.push({ name: 'Login' })
         } else {
             toast.error('User credentials are invalid!')
