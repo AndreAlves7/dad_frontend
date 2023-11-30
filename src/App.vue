@@ -1,20 +1,50 @@
 <script setup>
+import { useRouter, RouterView } from 'vue-router';
+import { useToast } from "vue-toastification"
+import { useUserStore } from './stores/user.js'
 
-import { RouterView } from 'vue-router';
+const toast = useToast()
+const router = useRouter()
+const userStore = useUserStore()
 
-const clickMenuOption = () => {
-  const domReference = document.getElementById('buttonSidebarExpandId')
-  if (domReference) {
-    if (window.getComputedStyle(domReference).display !== "none") {
-      domReference.click()
-    }
+// const clickMenuOption = () => {
+//   const domReference = document.getElementById('buttonSidebarExpandId')
+//   if (domReference) {
+//     if (window.getComputedStyle(domReference).display !== "none") {
+//       domReference.click()
+//     }
+//   }
+// }
+
+const logout = async () => {
+  if (await userStore.logout()) {
+    toast.success('Sucessfully logged out of the application!')
+    router.push({ name: 'Login' })
+  } else {
+    toast.error('There was a problem logging out of the application!')
   }
 }
+
 </script>
 
 
 <template>
-  <router-view></router-view>
+
+  <nav v-if="userStore.user" class="navbar navbar-expand-md navbar-dark bg-dark sticky-top flex-md-nowrap p-0 shadow">
+    <div class="container-fluid">
+      <div class="collapse navbar-collapse justify-content-end">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <button class="btn btn-outline-warning" @click="logout">Logout</button>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main class="ms-sm-auto col-lg-10 px-md-4">
+    <router-view></router-view>
+  </main>
 </template>
 
 <style>
