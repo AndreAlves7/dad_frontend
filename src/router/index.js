@@ -4,6 +4,7 @@ import { useUserStore } from "../stores/user.js"
 import Login from "../components/Login.vue"
 import Dashboard from "../components/Dashboard.vue"
 import Signup from "../components/auth/Signup.vue"
+import Vcards from "../components/admin/Vcards.vue"
 
 let handlingFirstRoute = true
 
@@ -29,6 +30,11 @@ const router = createRouter({
             path: '/dashboard',
             name: 'Dashboard',
             component: Dashboard
+        },
+        {
+            path: '/admin/vcards',
+            name: 'Vcards',
+            component: Vcards
         },
     ]
 })

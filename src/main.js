@@ -2,6 +2,7 @@ import axios from 'axios'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap'
 import { io } from 'socket.io-client'
+import { BootstrapIconsPlugin } from 'bootstrap-icons-vue';
 
 import Toast from "vue-toastification"
 import "vue-toastification/dist/index.css"
@@ -24,7 +25,7 @@ const wsConnection = import.meta.env.VITE_WS_CONNECTION
 app.provide('socket', io(wsConnection))
 
 app.provide('serverBaseUrl', apiDomain)
-axios.defaults.baseURL = apiDomain
+axios.defaults.baseURL = apiDomain + '/api'
 axios.defaults.headers.common['Content-type'] = 'application/json'
 
 // default toast configuration
@@ -45,6 +46,8 @@ app.use(Toast, {
 
 app.use(createPinia())
 app.use(router)
+
+app.use(BootstrapIconsPlugin)
 
 app.component('FieldErrorMessage', FieldErrorMessage)
 

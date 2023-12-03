@@ -7,8 +7,6 @@ const toast = useToast()
 const router = useRouter()
 const userStore = useUserStore()
 
-console.log(userStore)
-
 const clickMenuOption = () => {
   const domReference = document.getElementById('buttonSidebarExpandId')
   if (domReference) {
@@ -103,7 +101,8 @@ const logout = async () => {
             </li>
           </ul>
 
-          <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted" v-if="userStore.user?.user_type == 'A'">
+          <h6 v-if="userStore.user?.user_type == 'A'"
+           class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted" >
             <span>Administration</span>
             <!-- <router-link
               class="link-secondary" :to="{ name: 'NewProject' }" aria-label="Add a new project" @click="clickMenuOption">
@@ -111,10 +110,11 @@ const logout = async () => {
             </router-link> -->
           </h6>
 
-          <ul class="nav flex-column mb-2">
+          <ul v-if="userStore.user?.user_type == 'A'"
+           class="nav flex-column mb-2">
             <li class="nav-item">
-              <router-link class="nav-link" :class="{ active: $route.name === 'Dashboard' }"
-                          :to="{ name: 'Dashboard' }" @click="clickMenuOption">
+              <router-link class="nav-link" :class="{ active: $route.name === 'Vcards' }"
+                          :to="{ name: 'Vcards' }" @click="clickMenuOption">
                 <i class="bi bi-house"></i>
                 vCards
               </router-link>
