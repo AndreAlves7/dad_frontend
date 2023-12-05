@@ -24,8 +24,8 @@ const isValidInputs = () => {
         errors.value['phoneNumber'] = ['Phone number must have 9 digits!']
         isValid = false
     }
-    if(newUser.value.confirmation_code.length < 4) {
-        errors.value['pin'] = ['Pin must have at least 4 digits!']
+    if(newUser.value.confirmation_code.length < 3) {
+        errors.value['pin'] = ['Pin must have at least 3 digits!']
         isValid = false
     }
     if(newUser.value.name.length === 0) {

@@ -1,19 +1,7 @@
-<template>
-
-<div class="styleResponse">
-        <h2>Response</h2>
-        <p>{{vcard}}</p>
-</div>
-
-  <WebSocketTester />
-
-
-</template>
-
-
 
 <script setup>
 import WebSocketTester from './WebSocketTester.vue';
+
 import { ref, onMounted, } from 'vue'
 import axios from 'axios'
 import routes from '../utils/routes'
@@ -28,8 +16,18 @@ onMounted(async()=>{
   vcard.value = result.data.data;
 })
 
-
 </script>
+
+<template>
+
+  <div class="styleResponse">
+          <h2>Response</h2>
+          <p>{{vcard}}</p>
+  </div>
+    <WebSocketTester />
+  
+  </template>
+  
 
 <style scoped>
   .styleResponse{
