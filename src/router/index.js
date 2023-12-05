@@ -53,6 +53,10 @@ router.beforeEach(async (to, from, next) => {
       next({ name: 'Login' })
       return
     }
+    if(userStore.userType == 'A' && (to.name == 'Dashboard' || to.name == 'home')) {
+        next({name: 'Vcards'})
+        return
+    }
     next()
 })
 

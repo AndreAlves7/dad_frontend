@@ -93,7 +93,7 @@ const logout = async () => {
         <div class="position-sticky pt-3">
           <ul class="nav flex-column" v-if="userStore.user">
             <li class="nav-item">
-              <router-link class="nav-link" :class="{ active: $route.name === 'Dashboard' }"
+              <router-link class="nav-link" :class="{ active: $route.name === 'Dashboard' }" v-if="userStore.userType != 'A'"
                           :to="{ name: 'Dashboard' }" @click="clickMenuOption">
                 <i class="bi bi-house"></i>
                 Dashboard
