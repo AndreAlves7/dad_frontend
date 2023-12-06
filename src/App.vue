@@ -101,7 +101,7 @@ const logout = async () => {
             </li>
           </ul>
 
-          <h6 v-if="userStore.user?.user_type == 'A'"
+          <h6 v-if="userStore.userType == 'A'"
            class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted" >
             <span>Administration</span>
             <!-- <router-link
@@ -110,7 +110,7 @@ const logout = async () => {
             </router-link> -->
           </h6>
 
-          <ul v-if="userStore.user?.user_type == 'A'"
+          <ul v-if="userStore.userType == 'A'"
            class="nav flex-column mb-2">
             <li class="nav-item">
               <router-link class="nav-link" :class="{ active: $route.name === 'Vcards' }"

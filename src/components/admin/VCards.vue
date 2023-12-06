@@ -1,15 +1,15 @@
 <script setup>
-import axios from 'axios'
-import routes from '../../utils/routes'
 import { ref, onMounted } from 'vue'
 import VcardTable from './VCardTable.vue'
+import { useVcardsStore } from "../../stores/vcard.js"
+
+const vcardsStore = useVcardsStore()
 
 const vcards = ref([])
 
 const loadVcards = async () => {
     try {
-        const response = await axios.get(routes.vcard)
-        vcards.value = response.data.data
+        vcards.value = await vcardsStore.loadVcards()
     } catch (error) {
         console.log(error)
     }

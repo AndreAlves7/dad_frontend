@@ -1,9 +1,11 @@
 <script setup>
 import { inject } from "vue";
+import { useRouter } from 'vue-router'
 import { BIconBan, BIconPencil } from 'bootstrap-icons-vue'
 import avatarNoneUrl from '@/assets/avatar-none.png'
 
 const serverBaseUrl = inject("serverBaseUrl");
+const router = useRouter()
 
 const props = defineProps({
   vcards: {
@@ -16,6 +18,10 @@ const photoFullUrl = (vcard) => {
   return vcard.photo_url
     ? serverBaseUrl + "/storage/fotos/" + vcard.photo_url
     : avatarNoneUrl;
+}
+
+const editClick = (vcard) => {
+  router.push({ name: 'Vcard', params: { phone_number: vcard.phone_number } })
 }
 
 </script>
@@ -31,6 +37,7 @@ const photoFullUrl = (vcard) => {
         <!-- <th class="align-middle">Balance</th>
         <th class="align-middle">Max. Debit</th> -->
         <th class="align-middle">Blocked</th>
+        <th class="align-middle">Actions</th>
       </tr>
     </thead>
     <tbody>
@@ -46,7 +53,7 @@ const photoFullUrl = (vcard) => {
         <td class="align-middle text-danger"><BIconBan v-show="vcard.blocked" /></td>
         <td class="text-end align-middle" >
           <div class="d-flex justify-content-end">
-            <button class="btn btn-xs btn-light" @click="editClick(user)" >
+            <button class="btn btn-xs btn-light" @click="editClick(vcard)" >
               <BIconPencil class="bi bi-xs" />
             </button>
           </div>
