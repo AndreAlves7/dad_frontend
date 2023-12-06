@@ -119,6 +119,13 @@ const logout = async () => {
                 vCards
               </router-link>
             </li>
+            <li class="nav-item">
+              <router-link class="nav-link" :class="{ active: $route.name === 'Admins' }"
+                          :to="{ name: 'Admins' }" @click="clickMenuOption">
+                <i class="bi bi-house"></i>
+                Admins
+              </router-link>
+            </li>
           </ul>
 
 

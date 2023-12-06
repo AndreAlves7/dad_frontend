@@ -5,6 +5,8 @@ import Login from "../components/Login.vue"
 import Dashboard from "../components/Dashboard.vue"
 import Signup from "../components/auth/Signup.vue"
 import Vcards from "../components/admin/Vcards.vue"
+import Admins from "../components/admin/administrators/Admin.vue"
+import adminCreate from "../components/admin/administrators/adminCreate.vue"
 
 let handlingFirstRoute = true
 
@@ -36,6 +38,16 @@ const router = createRouter({
             name: 'Vcards',
             component: Vcards
         },
+        {
+            path: '/admin/admins',
+            name: 'Admins',
+            component: Admins
+        },
+        {
+            path: '/admin/add',
+            name: 'AddAdmin',
+            component: adminCreate
+        }
     ]
 })
 
