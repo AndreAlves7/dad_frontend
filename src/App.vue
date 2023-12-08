@@ -93,7 +93,7 @@ const logout = async () => {
         <div class="position-sticky pt-3">
           <ul class="nav flex-column" v-if="userStore.user">
             <li class="nav-item">
-              <router-link class="nav-link" :class="{ active: $route.name === 'Dashboard' }"
+              <router-link class="nav-link" :class="{ active: $route.name === 'Dashboard' }" v-if="userStore.userType != 'A'"
                           :to="{ name: 'Dashboard' }" @click="clickMenuOption">
                 <i class="bi bi-house"></i>
                 Dashboard
@@ -117,6 +117,13 @@ const logout = async () => {
                           :to="{ name: 'Vcards' }" @click="clickMenuOption">
                 <i class="bi bi-house"></i>
                 vCards
+              </router-link>
+            </li>
+            <li class="nav-item">
+              <router-link class="nav-link" :class="{ active: $route.name === 'Admins' }"
+                          :to="{ name: 'Admins' }" @click="clickMenuOption">
+                <i class="bi bi-house"></i>
+                Admins
               </router-link>
             </li>
           </ul>
