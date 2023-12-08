@@ -34,8 +34,6 @@ const editClick = (vcard) => {
         <th class="align-middle">Phone Number</th>
         <th class="align-middle">Name</th>
         <th class="align-middle">Email</th>
-        <!-- <th class="align-middle">Balance</th>
-        <th class="align-middle">Max. Debit</th> -->
         <th class="align-middle">Blocked</th>
         <th class="align-middle">Actions</th>
       </tr>
@@ -48,8 +46,6 @@ const editClick = (vcard) => {
         <td class="align-middle">{{ vcard.phone_number }}</td>
         <td class="align-middle">{{ vcard.name }}</td>
         <td class="align-middle">{{ vcard.email }}</td>
-        <!-- <td class="align-middle">{{ vcard.balance }} €</td>
-        <td class="align-middle">{{ vcard.max_debit }} €</td> -->
         <td class="align-middle text-danger"><BIconBan v-show="vcard.blocked" /></td>
         <td class="text-end align-middle" >
           <div class="d-flex justify-content-end">

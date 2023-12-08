@@ -30,10 +30,21 @@ export const useVcardsStore = defineStore('projects', () => {
 
         // update the current vcard in vcards ref array
         if(vcard.value){
-            const vcardIndex = vcards.value.findIndex(vcard => vcard.phone_number === phone_number)
-            vcards.value[vcardIndex] = vcard.value
+            let vcardIndex = vcards.value.findIndex(vcard => vcard.phone_number === phone_number)
+            if(vcardIndex >= 0){
+                vcards.value[vcardIndex] = vcard.value
+            }
         }
         return vcard.value
+    }
+
+    async function updateVcard(updateVcard) {
+        const response = await axios.put('vcard/' + updateVcard.phone_number, updateVcard)
+        let vcardIndex = vcards.value.findIndex((i) => i.phone_number === response.data.data.phone_number)
+        if (vcardIndex >= 0) {
+            vcards.value[vcardIndex] = response.data.data
+        }
+        return response.data.data
     }
 
     return {
@@ -41,7 +52,8 @@ export const useVcardsStore = defineStore('projects', () => {
         vcard,
         clearVcards,
         loadVcards,
-        loadVcard
+        loadVcard,
+        updateVcard,
     }
 
 })

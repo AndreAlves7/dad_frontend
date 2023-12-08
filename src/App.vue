@@ -139,9 +139,9 @@ const logout = async () => {
 @import "./assets/dashboard.css";
 
 .avatar-img {
-  margin: -1.2rem 0.8rem -2rem 0.8rem;
-  width: 3.3rem;
-  height: 3.3rem;
+  margin: -2rem 0.8rem -2rem 0.8rem;
+  width: 2.3rem;
+  height: 2.3rem;
 }
 
 .avatar-text {
