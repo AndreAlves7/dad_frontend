@@ -76,17 +76,17 @@ const logout = async () => {
                   Profile
                 </router-link> -->
               </li>
-              <li>
+              <!-- <li>
                 <a class="dropdown-item">
                   <i class="bi bi-key-fill"></i>
                   Change password
-                </a>
+                </a> -->
                 <!-- <router-link class="dropdown-item" :class="{ active: $route.name === 'ChangePassword' }"
                               :to="{ name: 'ChangePassword' }" @click="clickMenuOption">
                   <i class="bi bi-key-fill"></i>
                   Change password
                 </router-link> -->
-              </li>
+              <!-- </li> -->
               <li>
                 <hr class="dropdown-divider">
               </li>
