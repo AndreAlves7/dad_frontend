@@ -1,6 +1,6 @@
   <script setup>
 import axios from 'axios';
-import {watch, ref, inject } from 'vue'
+import {watch, ref, inject, onMounted } from 'vue'
 import { useUserStore } from '../stores/user.js'
 import { useToast } from "vue-toastification"
 
@@ -10,6 +10,11 @@ const { showProfilePopup } = defineProps(['showProfilePopup']);
 const emit = defineEmits(['close-popup'])
 const showConfirmPopup = ref(false);
 const errors = ref([])
+const showConfirmationCodeInput = ref(null)
+
+watch(() => {
+  showConfirmationCodeInput.value = userStore.userType === 'V'
+})
 
 const formData = ref({
   name: '',
@@ -119,7 +124,7 @@ const sendData = async () => {
           <label for="email">Email:</label>
           <input v-model="formData.email" type="email" class="form-control" id="email" :placeholder="userStore.user.email">
         </div>
-        <div class="form-group">
+        <div v-if="showConfirmationCodeInput" class="form-group">
           <label for="confirmation_code">Confirmation Code:</label>
           <input v-model="formData.confirmation_code" type="text" class="form-control" id="confirmation_code" placeholder="Enter confirmation code">
         </div>
