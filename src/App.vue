@@ -108,7 +108,7 @@ const logout = async () => {
         <div class="position-sticky pt-3">
           <ul class="nav flex-column" v-if="userStore.user">
             <li class="nav-item">
-              <router-link class="nav-link" :class="{ active: $route.name === 'Dashboard' }"
+              <router-link class="nav-link" :class="{ active: $route.name === 'Dashboard' }" v-if="userStore.userType != 'A'"
                           :to="{ name: 'Dashboard' }" @click="clickMenuOption">
                 <i class="bi bi-house"></i>
                 Dashboard
@@ -116,7 +116,7 @@ const logout = async () => {
             </li>
           </ul>
 
-          <h6 v-if="userStore.user?.user_type == 'A'"
+          <h6 v-if="userStore.userType == 'A'"
            class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted" >
             <span>Administration</span>
             <!-- <router-link
@@ -125,13 +125,20 @@ const logout = async () => {
             </router-link> -->
           </h6>
 
-          <ul v-if="userStore.user?.user_type == 'A'"
+          <ul v-if="userStore.userType == 'A'"
            class="nav flex-column mb-2">
             <li class="nav-item">
               <router-link class="nav-link" :class="{ active: $route.name === 'Vcards' }"
                           :to="{ name: 'Vcards' }" @click="clickMenuOption">
                 <i class="bi bi-house"></i>
                 vCards
+              </router-link>
+            </li>
+            <li class="nav-item">
+              <router-link class="nav-link" :class="{ active: $route.name === 'Admins' }"
+                          :to="{ name: 'Admins' }" @click="clickMenuOption">
+                <i class="bi bi-house"></i>
+                Admins
               </router-link>
             </li>
           </ul>
@@ -152,9 +159,9 @@ const logout = async () => {
 @import "./assets/dashboard.css";
 
 .avatar-img {
-  margin: -1.2rem 0.8rem -2rem 0.8rem;
-  width: 3.3rem;
-  height: 3.3rem;
+  margin: -2rem 0.8rem -2rem 0.8rem;
+  width: 2.3rem;
+  height: 2.3rem;
 }
 
 .avatar-text {

@@ -1,4 +1,4 @@
-<script setup>
+  <script setup>
 import axios from 'axios';
 import {watch, ref, inject } from 'vue'
 import { useUserStore } from '../stores/user.js'
@@ -26,12 +26,10 @@ const clearFormData = () => {
     password: '',
     photo_url: null,
   });
+  password.value = ''
 };
 
-const credentials = ref({
-  phone_number:userStore.user.id,
-  password:""
-})
+const password = ref(null)
 
   const closePopup = () => {
     emit('close-popup');
@@ -41,19 +39,8 @@ const credentials = ref({
     showConfirmPopup.value = false
   }
 
-// watch(() => {
-//   if((formData.value.password != null && formData.value.password != "" )
-//     || formData.value.confirmation_code != null && formData.value.confirmation_code != ""){
-//     showCredentialCheck.value = true
-//   }else{
-//     showCredentialCheck.value = false
-//   }
-// })
-
-
 const handleFileChange = (event) => {
   const file = event.target.files[0];
-  // You can handle the file as needed, for example, setting it in the formData
   formData.value.photo_url = file;
 };
 
@@ -74,44 +61,17 @@ const submitForm = async () => {
   //Verify confirm password
     if(((formData.value.password != null && formData.value.password != "") 
         || (formData.value.confirmation_code != null) && formData.value.confirmation_code != "")){
-      // if((credentials.value.password === null || credentials.value.password === "")){
-      //   toast.error('Please confirm your current password when updating the confirmation or password fields');
         showConfirmPopup.value = true
         closePopup()
         return;
     }else{
-      // try{
-      // await axios.post('auth/confirmPassword', credentials.value)
-      // }catch(error){
-      //   toast.error(error.response.data.msg)
-      //   return;
-      // }
       sendData()
      }
     }
 
-
-    // try {
-    //     if(isValidInputs()){
-    //         await axios.patch(`/vcard/${userStore.user.id}`, formData.value)
-    //         toast.success('User data correctly Updated!')
-
-    //         clearFormData()
-    //         closePopup()
-    //     } else {
-    //     const allErrorMessages = Object.values(errors.value)
-    //         .reduce((acc, messages) => acc.concat(messages), []);
-
-    //     toast.error(`User data is invalid! Errors: ${allErrorMessages.join(', ')}`);
-    //     }
-    // } catch(error) {  
-    //   toast.error(error.response.data.message)
-    // }
-
-
 const confirmPassword = async () => {
   try{
-      await axios.post('auth/confirmPassword', credentials.value)
+      await axios.post('me/confirmPassword', {password:password.value})
       sendData()
       closeConfirmPopup()
       }catch(error){
@@ -122,12 +82,14 @@ const confirmPassword = async () => {
 
 const sendData = async () => {
   try {
+    console.log(formData)
         if(isValidInputs()){
-            await axios.patch(`/vcard/${userStore.user.id}`, formData.value)
+            await axios.patch('/me', formData.value)
             toast.success('User data correctly Updated!')
 
             clearFormData()
             closePopup()
+            userStore.loadUser();
         } else {
         const allErrorMessages = Object.values(errors.value)
             .reduce((acc, messages) => acc.concat(messages), []);
@@ -173,10 +135,6 @@ const sendData = async () => {
       
         <div class="submit-div">
           <button type="submit" class="btn btn-primary">Submit</button>
-
-          <!-- <div v-if="showCredentialCheck" class="form-group" style="padding-left: 15px; ">
-          <input v-model="credentials.password" type="password" class="form-control" id="confirmPass" placeholder="Confirm your password">
-        </div> -->
         </div>  
       
       </form>
@@ -195,7 +153,7 @@ const sendData = async () => {
             <button type="submit" class="btn btn-primary">Submit</button>
 
             <div class="form-group" style="padding-left: 15px; ">
-            <input v-model="credentials.password" type="password" class="form-control" id="confirmPass" placeholder="Confirm your password">
+            <input v-model="password" type="password" class="form-control" id="confirmPass" placeholder="Confirm your password">
           </div>
           
         </div>

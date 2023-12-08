@@ -21,14 +21,6 @@ const login = async () => {
     credentials.value.password = ''
     toast.error('User credentials are invalid!')
   }
-
-  // const responseRequest = await axios.get('/vcard')
-
-  // axios.defaults.headers.common.Authorization = "Bearer " + responseLogin.data.access_token
-  // const responseRequest = await axios.get('/vcard')
-
-  // console.log(responseRequest)
-  // responseData.value = responseRequest.data
 }
 </script>
 

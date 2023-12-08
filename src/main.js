@@ -4,6 +4,10 @@ import 'bootstrap'
 import { io } from 'socket.io-client'
 import { BootstrapIconsPlugin } from 'bootstrap-icons-vue';
 
+// bootstrap-vue-next
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue-next/dist/bootstrap-vue-next.css'
+
 import Toast from "vue-toastification"
 import "vue-toastification/dist/index.css"
 
@@ -15,40 +19,37 @@ import FieldErrorMessage from './components/global/FieldErrorMessage.vue'
 import App from './App.vue'
 import router from './router'
 
-const app = createApp(App)
 
 const apiDomain = import.meta.env.VITE_API_DOMAIN
 // const wsConnection = import.meta.env.VITE_WS_CONNECTION
 // app.provide('socket', io(wsConnection))
 const wsConnection = import.meta.env.VITE_WS_CONNECTION
 
-app.provide('socket', io(wsConnection))
 
-app.provide('serverBaseUrl', apiDomain)
 axios.defaults.baseURL = apiDomain + '/api'
 axios.defaults.headers.common['Content-type'] = 'application/json'
 
-// default toast configuration
-app.use(Toast, {
-  position: "top-center",
-  timeout: 3000,
-  closeOnClick: true,
-  pauseOnFocusLoss: true,
-  pauseOnHover: true,
-  draggable: true,
-  draggablePercent: 0.6,
-  showCloseButtonOnHover: true,
-  hideProgressBar: true,
-  closeButton: "button",
-  icon: true,
-  rtl: false
-})
+const app = createApp(App)
 
-app.use(createPinia())
-app.use(router)
-
-app.use(BootstrapIconsPlugin)
-
-app.component('FieldErrorMessage', FieldErrorMessage)
-
-app.mount('#app')
+app
+  .provide('socket', io(wsConnection))
+  .provide('serverBaseUrl', apiDomain)
+  .use(Toast, {
+    position: "top-center",
+    timeout: 3000,
+    closeOnClick: true,
+    pauseOnFocusLoss: true,
+    pauseOnHover: true,
+    draggable: true,
+    draggablePercent: 0.6,
+    showCloseButtonOnHover: true,
+    hideProgressBar: true,
+    closeButton: "button",
+    icon: true,
+    rtl: false
+  })
+  .use(createPinia())
+  .use(router)
+  .use(BootstrapIconsPlugin)
+  .component('FieldErrorMessage', FieldErrorMessage)
+  .mount('#app')
