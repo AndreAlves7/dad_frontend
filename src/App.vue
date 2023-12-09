@@ -1,11 +1,23 @@
 <script setup>
+import ProfileEdit from './components/ProfileEdit.vue';
 import { useRouter, RouterView } from 'vue-router';
 import { useToast } from "vue-toastification"
 import { useUserStore } from './stores/user.js'
+import { ref } from 'vue'
 
 const toast = useToast()
 const router = useRouter()
 const userStore = useUserStore()
+
+const showProfilePopup = ref(false)
+
+const clickProfileOption = () => {
+  showProfilePopup.value = !showProfilePopup.value
+}
+
+const handleClosePopup = () => {
+  showProfilePopup.value = false;
+};
 
 const clickMenuOption = () => {
   const domReference = document.getElementById('buttonSidebarExpandId')
@@ -29,6 +41,9 @@ const logout = async () => {
 
 
 <template>
+  
+    <ProfileEdit :showProfilePopup="showProfilePopup" @close-popup="handleClosePopup"/>  
+
   <nav class="navbar navbar-expand-md navbar-dark bg-dark sticky-top flex-md-nowrap p-0 shadow" v-if="userStore.user">
     <div class="container-fluid">
       <router-link class="navbar-brand col-md-3 col-lg-2 me-0 px-3" :to="{ name: 'home' }" @click="clickMenuOption">
@@ -50,7 +65,7 @@ const logout = async () => {
             </a>
             <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
               <li>
-                <a class="dropdown-item">
+                <a class="dropdown-item" @click="clickProfileOption">
                   <i class="bi bi-person-square"></i>
                   Profile
                 </a>
@@ -61,17 +76,17 @@ const logout = async () => {
                   Profile
                 </router-link> -->
               </li>
-              <li>
+              <!-- <li>
                 <a class="dropdown-item">
                   <i class="bi bi-key-fill"></i>
                   Change password
-                </a>
+                </a> -->
                 <!-- <router-link class="dropdown-item" :class="{ active: $route.name === 'ChangePassword' }"
                               :to="{ name: 'ChangePassword' }" @click="clickMenuOption">
                   <i class="bi bi-key-fill"></i>
                   Change password
                 </router-link> -->
-              </li>
+              <!-- </li> -->
               <li>
                 <hr class="dropdown-divider">
               </li>
@@ -127,8 +142,6 @@ const logout = async () => {
               </router-link>
             </li>
           </ul>
-
-
         </div>
       </nav>
     </div>
