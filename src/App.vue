@@ -141,6 +141,13 @@ const logout = async () => {
                 Admins
               </router-link>
             </li>
+            <li class="nav-item">
+              <router-link class="nav-link" :class="{ active: $route.name === 'CreditTransaction' }"
+                          :to="{ name: 'CreditTransaction' }" @click="clickMenuOption">
+                <i class="bi bi-house"></i>
+                Transaction
+              </router-link>
+            </li>
           </ul>
         </div>
       </nav>

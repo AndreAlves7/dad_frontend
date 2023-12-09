@@ -73,7 +73,7 @@ const photoFullUrl = (vcard) => {
               <div class="text-center">
                 <img :src="photoFullUrl(props.vcard)" class="rounded-circle img_photo" />
               </div>
-              <div class="mt-3 p-3 rounded bg-light">
+              <div class="mt-3 p-3 card bg-light">
                 <div class="mb-3">
 							    <label class="form-label">Phone Number</label>
   							  <input :value="props.vcard.phone_number" type="text" class="form-control" aria-label="Phone number" disabled >

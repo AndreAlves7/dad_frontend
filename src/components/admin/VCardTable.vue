@@ -54,7 +54,7 @@ const getSeverity = (status) => {
 <template>
 
 <DataTable v-model:filters="filters" v-model:selection="selectedVcard" :value="vcards"
-    stateStorage="session" stateKey="dt-state-demo-session" paginator :rows="10" filterDisplay="menu"
+    stateStorage="session" stateKey="table-vcards" paginator :rows="10" filterDisplay="menu"
     selectionMode="single" dataKey="phone_number" :globalFilterFields="['phone_number', 'name', 'email']">
     <template #header>
         <span class="p-input-icon-left">

@@ -8,6 +8,7 @@ import Vcards from "../components/admin/Vcards.vue"
 import Vcard from "../components/admin/Vcard.vue"
 import Admins from "../components/admin/administrators/Admin.vue"
 import adminCreate from "../components/admin/administrators/adminCreate.vue"
+import CreditTransaction from "../components/admin/transactions/CreditTransactionCreate.vue"
 
 let handlingFirstRoute = true
 
@@ -54,6 +55,11 @@ const router = createRouter({
             path: '/admin/add',
             name: 'AddAdmin',
             component: adminCreate
+        },
+        {
+            path: '/admin/transactions/add',
+            name: 'CreditTransaction',
+            component: CreditTransaction
         }
     ]
 })

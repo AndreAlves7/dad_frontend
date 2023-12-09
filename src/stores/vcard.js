@@ -3,7 +3,7 @@ import axios from "axios"
 import { defineStore } from "pinia"
 import routes from "../utils/routes.js"
 
-export const useVcardsStore = defineStore('projects', () => {
+export const useVcardsStore = defineStore('vcards', () => {
 
     const vcards = ref([])
 
@@ -63,7 +63,7 @@ export const useVcardsStore = defineStore('projects', () => {
         loadVcards,
         loadVcard,
         updateVcard,
-        deleteVcard,
+        deleteVcard
     }
 
 })
