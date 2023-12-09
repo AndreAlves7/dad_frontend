@@ -2,7 +2,11 @@
 import { ref, inject } from 'vue'
 const serverBaseUrl = inject("serverBaseUrl");
 import avatarNoneUrl from '@/assets/avatar-none.png'
+import ConfirmDialog from 'primevue/confirmdialog';
+import Button from 'primevue/button';
+import { useConfirm } from "primevue/useconfirm";
 
+const confirm = useConfirm();
 
 const props = defineProps({
   vcard: {
@@ -15,12 +19,28 @@ const props = defineProps({
   },
 })
 
-const emit = defineEmits(['update', 'cancel'])
+const emit = defineEmits(['update', 'remove', 'cancel'])
 
 const editingVcard = ref(props.vcard)
 
 const save = () => {
   emit('update', editingVcard.value)
+}
+
+const remove = () => {
+  confirm.require({
+        message: 'Do you want to delete this VCard?',
+        header: 'Delete Confirmation',
+        icon: 'pi pi-info-circle',
+        rejectClass: 'p-button-text p-button-text',
+        acceptClass: 'p-button-danger p-button-text',
+        accept: () => {
+          emit('remove', editingVcard.value)
+        },
+        reject: () => {
+          return;
+        }
+  });
 }
 
 const cancel = () => {
@@ -90,6 +110,9 @@ const photoFullUrl = (vcard) => {
                       <option value="1">Blocked</option>
                     </select>
                 </div>
+                <div class="text-center mt-4">
+                  <Button label="Delete vCard" severity="danger" text @click="remove" />
+                </div>
               </div>
             </div>
           </div>
@@ -113,6 +136,8 @@ const photoFullUrl = (vcard) => {
         </div>
         </form>
       </div>
+
+    <ConfirmDialog></ConfirmDialog>
     </div>
 </template>
 
