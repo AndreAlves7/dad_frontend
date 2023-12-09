@@ -25,7 +25,10 @@ onMounted (() => {
     <div class="container">
         <div class="row">
         <div class="col-12 mt-3">
-            <h2>VCards</h2>
+            <div class="mb-3">
+                <h2>VCards</h2>
+                <hr>
+            </div>
             <vcard-table :vcards="vcards"></vcard-table>
         </div>
         </div>

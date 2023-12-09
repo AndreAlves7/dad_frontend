@@ -1,8 +1,15 @@
 <script setup>
-import { inject } from "vue";
+import { inject, ref } from "vue";
 import { useRouter } from 'vue-router'
-import { BIconBan, BIconPencil } from 'bootstrap-icons-vue'
+import { BIconSearch, BIconPencil } from 'bootstrap-icons-vue'
 import avatarNoneUrl from '@/assets/avatar-none.png'
+
+import DataTable from 'primevue/datatable';
+import Column from 'primevue/column';
+import InputText from 'primevue/inputtext';
+import Tag from 'primevue/tag';
+
+import { FilterMatchMode, FilterOperator } from 'primevue/api';
 
 const serverBaseUrl = inject("serverBaseUrl");
 const router = useRouter()
@@ -14,19 +21,91 @@ const props = defineProps({
   },
 })
 
-const photoFullUrl = (vcard) => {
-  return vcard.photo_url
-    ? serverBaseUrl + "/storage/fotos/" + vcard.photo_url
+const photoFullUrl = (photo_url) => {
+  return photo_url
+    ? serverBaseUrl + "/storage/fotos/" + photo_url
     : avatarNoneUrl;
 }
 
-const editClick = (vcard) => {
-  router.push({ name: 'Vcard', params: { phone_number: vcard.phone_number } })
+const editClick = (phone_number) => {
+  router.push({ name: 'Vcard', params: { phone_number: phone_number } })
 }
+
+const filters = ref(
+    {
+        global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+        name: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
+        email: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] }
+    }
+);
+
+const selectedVcard = ref();
+
+const getSeverity = (status) => {
+    switch (status) {
+        case 1:
+            return 'danger';
+
+        case 0:
+            return 'success';
+    }
+};
 
 </script>
 
 <template>
+
+<DataTable v-model:filters="filters" v-model:selection="selectedVcard" :value="vcards"
+    stateStorage="session" stateKey="dt-state-demo-session" paginator :rows="10" filterDisplay="menu"
+    selectionMode="single" dataKey="phone_number" :globalFilterFields="['phone_number', 'name', 'email']">
+    <template #header>
+        <span class="p-input-icon-left">
+            <BIconSearch />
+            <InputText v-model="filters['global'].value" placeholder="Search" />
+        </span>
+    </template>
+    <Column header="Photo" style="width: 5%" >
+      <template #body="{ data }">
+        <img :src="photoFullUrl(data.photo_url)" class="rounded-circle img_photo" />
+      </template>
+    </Column>
+    <Column field="phone_number" header="Phone number" sortable filterMatchMode="contains" style="width: 50%">
+      <template #body="{ data }">
+        <div class="flex align-items-center gap-2">
+          <span>{{ data.phone_number }}</span>
+        </div>
+      </template>
+    </Column>
+    <Column field="name" header="Name" sortable filterMatchMode="contains" style="width: 70%">
+      <template #body="{ data }">
+        <div class="flex align-items-center gap-2">
+          <span>{{ data.name }}</span>
+        </div>
+      </template>
+    </Column>
+    <Column field="email" header="E-mail" sortable sortField="email" filterField="email" filterMatchMode="contains" style="width: 45%">
+        <template #body="{ data }">
+            <div class="flex align-items-center gap-2">
+                <span>{{ data.email }}</span>
+            </div>
+        </template>
+    </Column>
+    <Column field="blocked" header="Status" sortable filterMatchMode="equals" style="width: 25%">
+        <template #body="{ data }">
+            <Tag :value="data.blocked" :severity="getSeverity(data.blocked)" />
+        </template>
+    </Column>
+    <Column header="Actions" style="width: 25%">
+      <template #body="{ data }">
+        <button class="btn btn-xs btn-light" @click="editClick(data.phone_number)" >
+          <BIconPencil class="bi bi-xs" />
+        </button>
+      </template>
+    </Column>
+    <template #empty> No VCards found. </template>
+</DataTable>
+
+<!-- 
     <table class="table">
     <thead>
       <tr>
@@ -56,7 +135,7 @@ const editClick = (vcard) => {
         </td>
       </tr>
     </tbody>
-  </table>
+  </table> -->
 </template>
 
 <style scoped>

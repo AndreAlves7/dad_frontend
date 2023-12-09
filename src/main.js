@@ -3,6 +3,8 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap'
 import { io } from 'socket.io-client'
 import { BootstrapIconsPlugin } from 'bootstrap-icons-vue';
+import PrimeVue from 'primevue/config';
+
 
 // bootstrap-vue-next
 import 'bootstrap/dist/css/bootstrap.css'
@@ -10,6 +12,10 @@ import 'bootstrap-vue-next/dist/bootstrap-vue-next.css'
 
 import Toast from "vue-toastification"
 import "vue-toastification/dist/index.css"
+
+import 'primevue/resources/themes/bootstrap4-light-blue/theme.css'
+
+import './assets/main.css'
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
@@ -51,5 +57,6 @@ app
   .use(createPinia())
   .use(router)
   .use(BootstrapIconsPlugin)
+  .use(PrimeVue)
   .component('FieldErrorMessage', FieldErrorMessage)
   .mount('#app')
