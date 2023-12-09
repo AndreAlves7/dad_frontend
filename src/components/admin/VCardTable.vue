@@ -90,7 +90,7 @@ const getSeverity = (status) => {
     </Column>
     <Column field="blocked" header="Status" sortable filterMatchMode="equals" style="width: 40%">
         <template #body="{ data }">
-            <Tag :value="data.blocked ? 'blocked' : 'not blocked'" :severity="getSeverity(data.blocked)" />
+            <Tag :value="data.blocked ? 'blocked' : 'active'" :severity="getSeverity(data.blocked)" />
         </template>
     </Column>
     <Column header="Actions" style="width: 25%">
