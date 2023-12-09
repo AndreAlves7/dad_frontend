@@ -34,7 +34,9 @@ export const useUserStore = defineStore('user', () => {
 
     function clearUser() {
         delete axios.defaults.headers.common.Authorization
-        sessionStorage.removeItem('token')
+        // sessionStorage.removeItem('token')
+        // sessionStorage.removeItem('table-vcards')
+        sessionStorage.clear()
         user.value = null
     }
 
