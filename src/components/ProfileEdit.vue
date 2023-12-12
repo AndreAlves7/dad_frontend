@@ -103,6 +103,10 @@ const isValidInputs = () => {
         errors.value['pin'] = ['Pin must have at least 3 digits!']
         isValid = false
     }
+    if (formData.value.password.length !== 0 && formData.value.password.length < 6) {
+        errors.value['pin'] = ['Password must have at least 6 digits!']
+        isValid = false
+    }
 
     return isValid
 }
@@ -110,8 +114,14 @@ const isValidInputs = () => {
 const submitForm = async () => {
     if (((formData.value.password != null && formData.value.password != "") ||
         (formData.value.confirmation_code != null) && formData.value.confirmation_code != "")) {
-        showConfirmPopup.value = true
-        closePopup()
+        if (isValidInputs()) {
+          showConfirmPopup.value = true
+          closePopup()
+        } else {
+            const allErrorMessages = Object.values(errors.value)
+                .reduce((acc, messages) => acc.concat(messages), []);
+            toast.error(`User data is invalid! Errors: ${allErrorMessages.join(', ')}`);
+        }
         return;
     } else {
       performUpdate()
@@ -200,7 +210,7 @@ const closeAllPopups = () => {
         <span aria-hidden="true">&times;</span>
       </button>
   
-      <h2 class="mb-4">Update User</h2>
+      <h2 class="mb-4">Manage User</h2>
       <form @submit.prevent="submitForm">
         <div class="form-group">
           <label for="name">Name:</label>
@@ -240,7 +250,7 @@ const closeAllPopups = () => {
       <form @submit.prevent="confirmPassword" class="confirm-form">
         <h2 class="mb-4">Confirm Credentials</h2>
 
-        <div class="form-group">
+        <div v-if="!isUserAdmin" class="form-group">
           <label for="confirmPin">Confirm Your PIN</label>
           <input v-model="formData.confirmation_pin" type="password" class="form-control" id="confirmPin" placeholder="Enter your PIN">
         </div>
@@ -265,7 +275,7 @@ const closeAllPopups = () => {
   <form @submit.prevent="deleteUser" class="confirm-form">
     <h2 class="mb-4">Confirm Credentials</h2>
 
-    <div class="form-group mt-3">
+    <div v-if="!isUserAdmin" class="form-group mt-3">
       <label for="confirmPin">Confirm Your PIN</label>
       <input v-model="deleteRequest.confirmation_pin" type="password" class="form-control" id="confirmPin" placeholder="Enter your PIN">
     </div>
@@ -286,6 +296,7 @@ const closeAllPopups = () => {
 <style scoped>
 /* Custom styles for the popup */
 .popup {
+  border-radius: 5%;
   position: fixed;
   top: 50%;
   left: 50%;
