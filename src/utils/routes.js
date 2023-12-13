@@ -3,5 +3,6 @@ export default {
     logout: '/auth/logout',
     signup: '/auth/signup',
     vcard: '/vcard',
-    admins: '/user'
+    admins: '/user',
+    transactions: '/transaction',
 }

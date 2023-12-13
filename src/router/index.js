@@ -8,6 +8,7 @@ import Vcards from "../components/admin/Vcards.vue"
 import Vcard from "../components/admin/Vcard.vue"
 import Admins from "../components/admin/administrators/Admin.vue"
 import adminCreate from "../components/admin/administrators/adminCreate.vue"
+import MakeTransaction from "../components/vcard/MakeTransaction.vue"
 
 let handlingFirstRoute = true
 
@@ -33,6 +34,11 @@ const router = createRouter({
             path: '/dashboard',
             name: 'Dashboard',
             component: Dashboard
+        },
+        {
+            path: '/maketransaction',
+            name: 'MakeTransaction',
+            component: MakeTransaction
         },
         {
             path: '/admin/vcards',
