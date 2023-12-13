@@ -46,14 +46,7 @@
 
 
     const submitForm = () => {
-      console.log(form.value);
-      axios.post('http://localhost:8080/api/transaction', form.value)
-        .then(response => {
-          console.log(response);
-        })
-        .catch(error => {
-          console.log(error);
-        }
+    
     }
 
 
