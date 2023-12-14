@@ -156,6 +156,31 @@ const logout = async () => {
               </router-link>
             </li>
           </ul>
+
+          <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted" >
+            <span>Statistics</span>
+          </h6>
+          
+          <ul v-if="userStore.userType == 'V'" class="nav flex-column mb-2">
+            <li class="nav-item">
+              <router-link class="nav-link" :class="{ active: $route.name === 'VCardStatistics' }"
+                          :to="{ name: 'VCardStatistics' }" @click="clickMenuOption">
+                <i class="bi bi-house"></i>
+                Vcard Statistics
+              </router-link>
+            </li>
+          </ul>
+
+          <ul v-if="userStore.userType == 'A'" class="nav flex-column mb-2">
+            <li class="nav-item">
+              <router-link class="nav-link" :class="{ active: $route.name === 'Transactions' }"
+                          :to="{ name: 'Transactions' }" @click="clickMenuOption">
+                <i class="bi bi-house"></i>
+                Admin Statistics
+              </router-link>
+            </li>
+          </ul>
+
         </div>
       </nav>
     </div>

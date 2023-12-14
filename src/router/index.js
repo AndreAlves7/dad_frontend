@@ -9,6 +9,8 @@ import Vcard from "../components/admin/Vcard.vue"
 import Admins from "../components/admin/administrators/Admin.vue"
 import adminCreate from "../components/admin/administrators/adminCreate.vue"
 import Transactions from "../components/TransactionsTable.vue"
+import VCardStatistics from "../components/VCardStatistics.vue"
+
 
 let handlingFirstRoute = true
 
@@ -60,6 +62,11 @@ const router = createRouter({
             path: '/vcard/transactions',
             name: 'Transactions',
             component: Transactions
+        },
+        {
+            path: '/statistics/vcard',
+            name: 'VCardStatistics',
+            component: VCardStatistics
         }
     ]
 })
