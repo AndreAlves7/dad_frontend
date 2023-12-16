@@ -4,6 +4,7 @@ import 'bootstrap'
 import { io } from 'socket.io-client'
 import { BootstrapIconsPlugin } from 'bootstrap-icons-vue';
 import PrimeVue from 'primevue/config';
+import ConfirmationService from 'primevue/confirmationservice';
 
 
 // bootstrap-vue-next
@@ -58,5 +59,6 @@ app
   .use(router)
   .use(BootstrapIconsPlugin)
   .use(PrimeVue)
+  .use(ConfirmationService)
   .component('FieldErrorMessage', FieldErrorMessage)
   .mount('#app')

@@ -3,7 +3,7 @@ import axios from "axios"
 import { defineStore } from "pinia"
 import routes from "../utils/routes.js"
 
-export const useVcardsStore = defineStore('projects', () => {
+export const useVcardsStore = defineStore('vcards', () => {
 
     const vcards = ref([])
 
@@ -47,6 +47,15 @@ export const useVcardsStore = defineStore('projects', () => {
         return response.data.data
     }
 
+    async function deleteVcard(deleteVcard) {
+        const response = await axios.delete('vcard/' + deleteVcard.phone_number)
+        let vcardIndex = vcards.value.findIndex((i) => i.phone_number === deleteVcard.phone_number)
+        if (vcardIndex >= 0) {
+            vcards.value.splice(vcardIndex, 1)
+        }
+        return response.data.data
+    }
+
     return {
         vcards,
         vcard,
@@ -54,6 +63,7 @@ export const useVcardsStore = defineStore('projects', () => {
         loadVcards,
         loadVcard,
         updateVcard,
+        deleteVcard
     }
 
 })

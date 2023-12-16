@@ -1,11 +1,23 @@
 <script setup>
+import ProfileEdit from './components/ProfileEdit.vue';
 import { useRouter, RouterView } from 'vue-router';
 import { useToast } from "vue-toastification"
 import { useUserStore } from './stores/user.js'
+import { ref } from 'vue'
 
 const toast = useToast()
 const router = useRouter()
 const userStore = useUserStore()
+
+const showProfilePopup = ref(false)
+
+const clickProfileOption = () => {
+  showProfilePopup.value = !showProfilePopup.value
+}
+
+const handleClosePopup = () => {
+  showProfilePopup.value = false;
+};
 
 const clickMenuOption = () => {
   const domReference = document.getElementById('buttonSidebarExpandId')
@@ -29,6 +41,9 @@ const logout = async () => {
 
 
 <template>
+  
+    <ProfileEdit :showProfilePopup="showProfilePopup" @close-popup="handleClosePopup"/>  
+
   <nav class="navbar navbar-expand-md navbar-dark bg-dark sticky-top flex-md-nowrap p-0 shadow" v-if="userStore.user">
     <div class="container-fluid">
       <router-link class="navbar-brand col-md-3 col-lg-2 me-0 px-3" :to="{ name: 'home' }" @click="clickMenuOption">
@@ -50,27 +65,10 @@ const logout = async () => {
             </a>
             <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
               <li>
-                <a class="dropdown-item">
+                <a class="dropdown-item" @click="clickProfileOption">
                   <i class="bi bi-person-square"></i>
                   Profile
                 </a>
-                <!-- <router-link class="dropdown-item"
-                            :class="{ active: $route.name == 'User' && $route.params.id == userStore.userId }"
-                            :to="{ name: 'User', params: { id: userStore.userId } }" @click="clickMenuOption">
-                  <i class="bi bi-person-square"></i>
-                  Profile
-                </router-link> -->
-              </li>
-              <li>
-                <a class="dropdown-item">
-                  <i class="bi bi-key-fill"></i>
-                  Change password
-                </a>
-                <!-- <router-link class="dropdown-item" :class="{ active: $route.name === 'ChangePassword' }"
-                              :to="{ name: 'ChangePassword' }" @click="clickMenuOption">
-                  <i class="bi bi-key-fill"></i>
-                  Change password
-                </router-link> -->
               </li>
               <li>
                 <hr class="dropdown-divider">
@@ -93,7 +91,7 @@ const logout = async () => {
         <div class="position-sticky pt-3">
           <ul class="nav flex-column" v-if="userStore.user">
             <li class="nav-item">
-              <router-link class="nav-link" :class="{ active: $route.name === 'Dashboard' }" v-if="userStore.userType != 'A'"
+              <router-link class="nav-link" :class="{ active: $route.name === 'Dashboard' }"
                           :to="{ name: 'Dashboard' }" @click="clickMenuOption">
                 <i class="bi bi-house"></i>
                 Dashboard
@@ -108,13 +106,23 @@ const logout = async () => {
             </li>
           </ul>
 
+          <h6 v-if="userStore.userType == 'V'" class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted" >
+            <span>General</span>
+          </h6>
+          
+          <ul v-if="userStore.userType == 'V'" class="nav flex-column mb-2">
+            <li class="nav-item">
+              <router-link class="nav-link" :class="{ active: $route.name === 'Transactions' }"
+                          :to="{ name: 'Transactions' }" @click="clickMenuOption">
+                <i class="bi bi-house"></i>
+                Transactions
+              </router-link>
+            </li>
+          </ul>
+
           <h6 v-if="userStore.userType == 'A'"
            class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted" >
             <span>Administration</span>
-            <!-- <router-link
-              class="link-secondary" :to="{ name: 'NewProject' }" aria-label="Add a new project" @click="clickMenuOption">
-              <i class="bi bi-xs bi-plus-circle"></i>
-            </router-link> -->
           </h6>
 
           <ul v-if="userStore.userType == 'A'"
@@ -133,9 +141,14 @@ const logout = async () => {
                 Admins
               </router-link>
             </li>
+            <li class="nav-item">
+              <router-link class="nav-link" :class="{ active: $route.name === 'CreditTransaction' }"
+                          :to="{ name: 'CreditTransaction' }" @click="clickMenuOption">
+                <i class="bi bi-house"></i>
+                Transaction
+              </router-link>
+            </li>
           </ul>
-
-
         </div>
       </nav>
     </div>
