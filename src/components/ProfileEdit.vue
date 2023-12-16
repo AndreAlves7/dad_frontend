@@ -103,8 +103,8 @@ const isValidInputs = () => {
         errors.value['pin'] = ['Pin must have at least 3 digits!']
         isValid = false
     }
-    if (formData.value.password.length !== 0 && formData.value.password.length < 6) {
-        errors.value['pin'] = ['Password must have at least 6 digits!']
+    if (formData.value.password.length !== 0 && formData.value.password.length < 3) {
+        errors.value['pin'] = ['Password must have at least 3 digits!']
         isValid = false
     }
 
