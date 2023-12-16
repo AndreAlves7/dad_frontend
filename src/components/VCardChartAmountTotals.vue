@@ -4,17 +4,24 @@ import { ref, onMounted } from 'vue';
 import { useUserStore } from '../stores/user.js';
 
 const userStore = useUserStore();
+const user = ref(null);
 const dataForStatistics = ref([]);
 
 const loadTransactions = async () => {
-    try {
-        await userStore.loadUser();
-        const response = await axios.get('/vcard/statistics/totals/' + userStore.user.id);
-        dataForStatistics.value = response.data;
-    } catch (error) {
-        console.error(error);
+  try {
+    await userStore.loadUser();
+    user.value = userStore.user;
+
+
+    if (user.value) {
+      const response = await axios.get(`/vcard/statistics/totals/${user.value.id}/${user.value.user_type}`);
+      dataForStatistics.value = response.data;
     }
+  } catch (error) {
+    console.error(error);
+  }
 };
+
 
 onMounted(() => {
     loadTransactions();

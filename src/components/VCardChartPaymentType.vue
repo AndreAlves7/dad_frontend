@@ -5,12 +5,15 @@ import { useUserStore } from '../stores/user.js';
 import Chart from 'primevue/chart';
 
 const userStore = useUserStore();
+const user = ref(null);
 const dataForStatistics = ref([]);
 
 const loadTransactions = async () => {
     try {
         await userStore.loadUser();
-        const response = await axios.get('/vcard/statistics/payment_types/' + userStore.user.id);
+        user.value = userStore.user;
+
+        const response = await axios.get(`/vcard/statistics/payment_types/${user.value.id}/${user.value.user_type}`);
         dataForStatistics.value = response.data;
 
     } catch (error) {

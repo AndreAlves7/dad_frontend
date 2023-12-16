@@ -5,12 +5,15 @@ import { useUserStore } from '../stores/user.js';
 import Chart from 'primevue/chart';
 
 const userStore = useUserStore();
+const user = ref(null);
 const transactions = ref([]);
 
 const loadTransactions = async () => {
     try {
         await userStore.loadUser();
-        const response = await axios.get('/vcard/statistics/' + userStore.user.id);
+        user.value = userStore.user;
+
+        const response = await axios.get(`/vcard/statistics/${user.value.id}/${user.value.user_type}`);
         transactions.value = response.data;
 
         console.log(transactions.value)
@@ -35,6 +38,8 @@ const setChartData = () => {
 
     const documentStyle = getComputedStyle(document.documentElement);
     const uniqueMonths = [...new Set(dataForStatistics.map(item => item.month))];
+    uniqueMonths.sort((a, b) => new Date(a) - new Date(b));
+
     const creditData = [];
     const debitData = [];
 
