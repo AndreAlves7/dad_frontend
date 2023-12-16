@@ -3,7 +3,7 @@
       <form @submit.prevent="submitForm">
         <div class="form-group">
           <label for="transactionValue">Transaction Value</label>
-          <InputNumber v-model="value2" inputId="currency-germany" mode="currency" currency="EUR" locale="de-DE" />
+          <InputNumber v-model="value" inputId="currency-germany" mode="currency" currency="EUR" locale="de-DE" />
         </div>
         <div class="form-group">
           <label for="paymentType">Payment Type</label>
@@ -26,15 +26,20 @@
     import InputText from 'primevue/inputtext';
     import Dropdown from 'primevue/dropdown';
     import axios from 'axios';
+    import routes from '../../utils/routes.js';
+    import { useUserStore } from '../../stores/user.js'
 
 
-    const value2 = ref(0);
+    const value = ref(0);
     const form = ref({
       referenceValue: '',
       paymentType: ''
     });
 
+    const userStore = useUserStore()
+
     const paymentTypes = [
+      { name: 'VCARD'},
       { name: 'MBWAY' },
       { name: 'PAYPAL' },
       { name: 'IBAN' },
@@ -44,9 +49,20 @@
 
     const selectedType = ref(null);
 
-
     const submitForm = () => {
-    
+      axios.post(routes.transactions, {
+        vcard: userStore.userId,
+        type: 'D',
+        value: value.value,
+        payment_reference: form.value.referenceValue,
+        payment_type: selectedType.value.name
+      })
+        .then(function (response) {
+          console.log(response);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
     }
 
 
@@ -54,5 +70,9 @@
 </script>
   
 <style scoped>
+
+  #ul{
+    padding: 0;
+  }
 
 </style>
