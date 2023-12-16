@@ -97,6 +97,13 @@ const logout = async () => {
                 Dashboard
               </router-link>
             </li>
+            <li class="nav-item">
+              <router-link class="nav-link" :class="{ active: $route.name === 'MakeTransaction' }" v-if="userStore.userType != 'A'"
+                          :to="{ name: 'MakeTransaction' }" @click="clickMenuOption">
+                <i class="bi bi-house"></i>
+                MakeTransaction
+              </router-link>
+            </li>
           </ul>
 
           <h6 v-if="userStore.userType == 'V'" class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted" >

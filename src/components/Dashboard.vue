@@ -5,7 +5,7 @@ import VCardChartPaymentType from './VCardChartPaymentType.vue';
 import VCardChartAmountTotals from './VCardChartAmountTotals.vue';
 
 
-import { ref, onMounted, } from 'vue'
+import { ref } from 'vue'
 import axios from 'axios'
 import routes from '../utils/routes'
 import { useUserStore } from '../stores/user.js'
@@ -13,11 +13,11 @@ import { useUserStore } from '../stores/user.js'
 const vcard = ref(null)
 const userStore = useUserStore()
 
-onMounted(async()=>{
-  // const result = await axios.ge/t('/vcard/' + userStore.user.username);
-  const result = await axios.get(`${routes.vcard}/${userStore.user.username}`);
-  vcard.value = result.data.data;
-})
+// onMounted(async()=>{
+//   // const result = await axios.ge/t('/vcard/' + userStore.user.username);
+//   const result = await axios.get(`${routes.vcard}/${userStore.user.username}`);
+//   vcard.value = result.data.data;
+// })
 
 </script>
 
@@ -25,10 +25,10 @@ onMounted(async()=>{
     <div class="container mt-4 mb-4">
 
     <div v-if="userStore.userType == 'A'" class="bg-custom p-3 text-white">
-      <h4>Welcome  {{ userStore.user.name }}</h4>
+      <h4>Welcome  {{ userStore.user?.name }}</h4>
     </div>
     <div v-else class="bg-custom p-3 text-white"> 
-      <h4>Welcome to your virtual card  {{ userStore.user.name }}</h4>
+      <h4>Welcome to your virtual card  {{ userStore.user?.name }}</h4>
     </div>
 
   </div>

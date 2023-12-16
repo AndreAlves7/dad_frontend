@@ -4,5 +4,5 @@ export default {
     signup: '/auth/signup',
     vcard: '/vcard',
     admins: '/user',
-    transactions: '/transaction'
+    transactions: '/transaction',
 }
