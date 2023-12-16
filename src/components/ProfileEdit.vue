@@ -1,120 +1,216 @@
-  <script setup>
+<script setup>
 import axios from 'axios';
-import {watch, ref, inject, onMounted } from 'vue'
+import { watch, ref, onMounted, computed } from 'vue'
 import { useUserStore } from '../stores/user.js'
 import { useToast } from "vue-toastification"
+import { useVcardsStore } from "../stores/vcard.js"
+import { useRouter} from 'vue-router';
 
+const vcardsStore = useVcardsStore()
 const toast = useToast()
 const userStore = useUserStore()
+const router = useRouter()
+
 const { showProfilePopup } = defineProps(['showProfilePopup']);
 const emit = defineEmits(['close-popup'])
 const showConfirmPopup = ref(false);
+const showDeletePopup = ref(false);
 const errors = ref([])
 const showConfirmationCodeInput = ref(null)
-
-watch(() => {
-  showConfirmationCodeInput.value = userStore.userType === 'V'
-})
+const vcard = ref(null)
+const isUserAdmin = computed(() => userStore.userType === 'A')
 
 const formData = ref({
-  name: '',
-  email: '',
-  confirmation_code: '',
-  password: '',
-  photo_url: '',
-});
-const clearFormData = () => {
-  Object.assign(formData.value, {
     name: '',
     email: '',
     confirmation_code: '',
     password: '',
-    photo_url: null,
+    photo_url: '',
+    confirmation_pin:null,
+    confirmation_password: null,
+});
+
+const deleteRequest = ref({
+    phone_number: '',
+    confirmation_pin:null,
+    confirmation_password: null,
+    user_type: null,
+});
+
+onMounted(() => {
+  userStore.loadUser();
+})
+
+watch(() => {
+    showConfirmationCodeInput.value = userStore.userType === 'V'
+})
+
+const loadVcard = async (phone_number) => {
+    try {
+        vcard.value = await vcardsStore.loadVcard(phone_number)
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+
+const clearFormData = () => {
+    Object.assign(formData.value, {
+        name: '',
+        email: '',
+        confirmation_code: '',
+        password: '',
+        photo_url: null,
+        confirmation_password: null,
+        confirmation_pin: null,
+    });
+    Object.assign(deleteRequest.value, {
+    phone_number: '',
+    confirmation_pin:null,
+    confirmation_password: null,
+    user_type: null,
   });
-  password.value = ''
 };
 
-const password = ref(null)
+const closePopupWithClear = () => {
+    closePopup()
+    clearFormData()
+}
 
-  const closePopup = () => {
+const closePopup = () => {
     emit('close-popup');
 };
 
-  const closeConfirmPopup = () => {
+const closeConfirmPopup = () => {
     showConfirmPopup.value = false
-  }
+    clearFormData();
+}
+
+const closeDeletePopup = () => {
+    showDeletePopup.value = false
+    clearFormData();
+}
 
 const handleFileChange = (event) => {
-  const file = event.target.files[0];
-  formData.value.photo_url = file;
+    const file = event.target.files[0];
+    formData.value.photo_url = file;
 };
-
 
 const isValidInputs = () => {
     let isValid = true
     errors.value = {}
-    if(formData.value.confirmation_code.length !== 0 && formData.value.confirmation_code.length < 3) {
+    if (formData.value.confirmation_code.length !== 0 && formData.value.confirmation_code.length < 3) {
         errors.value['pin'] = ['Pin must have at least 3 digits!']
         isValid = false
     }
-    
+    if (formData.value.password.length !== 0 && formData.value.password.length < 3) {
+        errors.value['pin'] = ['Password must have at least 3 digits!']
+        isValid = false
+    }
+
     return isValid
 }
 
 const submitForm = async () => {
-  
-  //Verify confirm password
-    if(((formData.value.password != null && formData.value.password != "") 
-        || (formData.value.confirmation_code != null) && formData.value.confirmation_code != "")){
-        showConfirmPopup.value = true
-        closePopup()
+    if (((formData.value.password != null && formData.value.password != "") ||
+        (formData.value.confirmation_code != null) && formData.value.confirmation_code != "")) {
+        if (isValidInputs()) {
+          showConfirmPopup.value = true
+          closePopup()
+        } else {
+            const allErrorMessages = Object.values(errors.value)
+                .reduce((acc, messages) => acc.concat(messages), []);
+            toast.error(`User data is invalid! Errors: ${allErrorMessages.join(', ')}`);
+        }
         return;
-    }else{
-      sendData()
-     }
+    } else {
+      performUpdate()
     }
-
-const confirmPassword = async () => {
-  try{
-      await axios.post('me/confirmPassword', {password:password.value})
-      sendData()
-      closeConfirmPopup()
-      }catch(error){
-        toast.error(error.response.data.msg)
-        return;
-      }
 }
 
-const sendData = async () => {
-  try {
-    console.log(formData)
-        if(isValidInputs()){
+const confirmPassword = async () => {
+    try {
+        performUpdate();
+    } catch (error) {
+        toast.error(error.response.data.msg);
+    }
+};
+
+const performUpdate = async () => {
+    try {
+        if (isValidInputs()) {
             await axios.patch('/me', formData.value)
             toast.success('User data correctly Updated!')
 
             clearFormData()
-            closePopup()
+            closeAllPopups()
             userStore.loadUser();
         } else {
-        const allErrorMessages = Object.values(errors.value)
-            .reduce((acc, messages) => acc.concat(messages), []);
-
-        toast.error(`User data is invalid! Errors: ${allErrorMessages.join(', ')}`);
+            const allErrorMessages = Object.values(errors.value)
+                .reduce((acc, messages) => acc.concat(messages), []);
+            toast.error(`User data is invalid! Errors: ${allErrorMessages.join(', ')}`);
         }
-    } catch(error) {  
-      toast.error(error.response.data.message)
+    } catch (error) {
+        toast.error(error.response.data.message)
     }
 }
+
+const showDeleteUserPopup = () => {
+    showDeletePopup.value = true;
+    closePopup()
+}
+
+const deleteUser = async () => {
+    userStore.loadUser();
+    loadVcard(userStore.user.id)
+    vcardsStore.loadVcard(vcardsStore);
+
+    errors.value = null
+    if (vcardsStore.vcard.balance > 0) {
+        toast.error('Balance must be 0 to delete VCard!');
+        errors.value = { balance: ['Balance must 0'] }
+        return;
+    }
+    try {
+        deleteRequest.value.phone_number = userStore.user.id
+        deleteRequest.value.user_type = userStore.userType
+        await axios.delete('/me', { data: deleteRequest.value });
+        toast.success(`VCard ${vcardsStore.vcard.phone_number} deleted successfully!`);
+
+        logout()
+    } catch (error) {
+        toast.error(error.response.data.message)
+    }
+}
+
+const logout = async () => {
+  if (await userStore.logout()) {
+    toast.success('Sucessfully logged out of the application!')
+    router.push({ name: 'Login' })
+    closeAllPopups()
+  } else {
+    toast.error('There was a problem logging out of the application!')
+  }
+}
+
+
+const closeAllPopups = () => {
+    closeDeletePopup()
+    closeConfirmPopup()
+    closePopup()
+}
+
 </script>
+
 
 
 <template>
     <div v-if="showProfilePopup" class="popup">
-      <button type="button" class="btn btn-outline-secondary close-button" aria-label="Close" @click="closePopup">
+      <button type="button" class="btn btn-outline-secondary close-button" aria-label="Close" @click="closePopupWithClear">
         <span aria-hidden="true">&times;</span>
       </button>
   
-      <h2 class="mb-4">Update User</h2>
+      <h2 class="mb-4">Manage User</h2>
       <form @submit.prevent="submitForm">
         <div class="form-group">
           <label for="name">Name:</label>
@@ -138,8 +234,9 @@ const sendData = async () => {
           <input v-on:change="handleFileChange" class="form-control form-control-sm" id="formFileSm" type="file">
         </div>
       
-        <div class="submit-div">
+        <div class="main-submit-div">
           <button type="submit" class="btn btn-primary">Submit</button>
+          <button v-if="!isUserAdmin" type="button" class="btn btn-danger" @click="showDeleteUserPopup">Delete User</button>
         </div>  
       
       </form>
@@ -147,28 +244,59 @@ const sendData = async () => {
 
     <div v-if="showConfirmPopup" class="popup">
       <button type="button" class="btn btn-outline-secondary close-button" aria-label="Close" @click="closeConfirmPopup">
-          <span aria-hidden="true">&times;</span>
-        </button>
+        <span aria-hidden="true">&times;</span>
+      </button>
 
-      <form @submit.prevent="confirmPassword">
-        <h2 class="mb-4">Confirm password</h2>
+      <form @submit.prevent="confirmPassword" class="confirm-form">
+        <h2 class="mb-4">Confirm Credentials</h2>
 
+        <div v-if="!isUserAdmin" class="form-group">
+          <label for="confirmPin">Confirm Your PIN</label>
+          <input v-model="formData.confirmation_pin" type="password" class="form-control" id="confirmPin" placeholder="Enter your PIN">
+        </div>
 
-          <div class="submit-div">
-            <button type="submit" class="btn btn-primary">Submit</button>
+        <div class="form-group">
+          <label for="confirmPassword">Confirm Your Password</label>
+          <input v-model="formData.confirmation_password" type="password" class="form-control" id="confirmPassword" placeholder="Enter your password">
+        </div>
 
-            <div class="form-group" style="padding-left: 15px; ">
-            <input v-model="password" type="password" class="form-control" id="confirmPass" placeholder="Confirm your password">
-          </div>
-          
+        <div class="form-group mt-3 text-center">
+          <button type="submit" class="btn btn-primary">Submit</button>
         </div>
       </form>
     </div>
+
+
+    <div v-if="showDeletePopup" class="popup">
+  <button type="button" class="btn btn-outline-secondary close-button" aria-label="Close" @click="closeDeletePopup">
+    <span aria-hidden="true">&times;</span>
+  </button>
+
+  <form @submit.prevent="deleteUser" class="confirm-form">
+    <h2 class="mb-4">Confirm Credentials</h2>
+
+    <div v-if="!isUserAdmin" class="form-group mt-3">
+      <label for="confirmPin">Confirm Your PIN</label>
+      <input v-model="deleteRequest.confirmation_pin" type="password" class="form-control" id="confirmPin" placeholder="Enter your PIN">
+    </div>
+
+    <div class="form-group">
+      <label for="confirmPassword">Confirm Your Password</label>
+      <input v-model="deleteRequest.confirmation_password" type="password" class="form-control" id="confirmPassword" placeholder="Enter your password">
+    </div>
+
+    <div class="submit-div text-center mt-3">
+      <button type="submit" class="btn btn-danger mx-auto">Delete</button>
+    </div>
+  </form>
+</div>
+
   </template>
 
 <style scoped>
 /* Custom styles for the popup */
 .popup {
+  border-radius: 5%;
   position: fixed;
   top: 50%;
   left: 50%;
@@ -207,4 +335,12 @@ const sendData = async () => {
   display: flex;
   flex-direction: row !important;
 }
+
+.main-submit-div{
+  display: flex;
+  flex-direction: row !important;
+  justify-content: center;
+  gap: 100px;
+}
+
 </style>

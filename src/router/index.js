@@ -10,6 +10,7 @@ import Admins from "../components/admin/administrators/Admin.vue"
 import adminCreate from "../components/admin/administrators/adminCreate.vue"
 import CreditTransaction from "../components/admin/transactions/CreditTransactionCreate.vue"
 
+
 let handlingFirstRoute = true
 
 const router = createRouter({
@@ -78,7 +79,7 @@ router.beforeEach(async (to, from, next) => {
       next({ name: 'Login' })
       return
     }
-    if(userStore.userType == 'A' && (to.name == 'Dashboard' || to.name == 'home')) {
+    if(userStore.userType == 'A' && (to.name == 'home')) {
         next({name: 'Vcards'})
         return
     }
