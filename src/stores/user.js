@@ -9,6 +9,8 @@ export const useUserStore = defineStore('user', () => {
 
     const serverBaseUrl = inject('serverBaseUrl')
 
+    const socket = inject('socket')
+
     const user = ref(null)
 
     const userName = computed(() => user.value?.name ?? 'Anonymous')
@@ -45,6 +47,7 @@ export const useUserStore = defineStore('user', () => {
             const response = await axios.post(routes.login, credentials)
             axios.defaults.headers.common.Authorization = "Bearer " + response.data.access_token
             sessionStorage.setItem('token', response.data.access_token)
+            socket.emit('loggedIn', user.value)
             await loadUser()
             return true
         }
@@ -57,6 +60,7 @@ export const useUserStore = defineStore('user', () => {
     async function logout () {
         try {
             await axios.post(routes.logout)
+            socket.emit('loggedOut', user.value)
             clearUser()
             return true
         } catch (error) {
@@ -81,6 +85,7 @@ export const useUserStore = defineStore('user', () => {
         let storedToken = sessionStorage.getItem('token')
         if (storedToken) {
             axios.defaults.headers.common.Authorization = "Bearer " + storedToken
+            socket.emit('loggedIn', user.value)
             await loadUser()
             return true
         }

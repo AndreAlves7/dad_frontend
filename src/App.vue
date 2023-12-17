@@ -42,7 +42,7 @@ const logout = async () => {
 
 <template>
   
-    <ProfileEdit :showProfilePopup="showProfilePopup" @close-popup="handleClosePopup"/>  
+  <ProfileEdit v-if="userStore.user" :showProfilePopup="showProfilePopup" @close-popup="handleClosePopup"/>  
 
   <nav class="navbar navbar-expand-md navbar-dark bg-dark sticky-top flex-md-nowrap p-0 shadow" v-if="userStore.user">
     <div class="container-fluid">
@@ -65,18 +65,18 @@ const logout = async () => {
             </a>
             <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
               <li>
-                <a class="dropdown-item" @click="clickProfileOption">
+                <button class="dropdown-item" @click="clickProfileOption" >
                   <i class="bi bi-person-square"></i>
                   Profile
-                </a>
+                </button>
               </li>
               <li>
                 <hr class="dropdown-divider">
               </li>
               <li>
-                <a class="dropdown-item" @click.prevent="logout">
+                <button class="dropdown-item" @click.prevent="logout">
                   <i class="bi bi-arrow-right"></i>Logout
-                </a>
+                </button>
               </li>
             </ul>
           </li>
