@@ -158,6 +158,9 @@ const handleFileChange = (event) => {
                         <button @click="signup" class="btn btn-outline-light px-5 mt-5" type="button">Create account</button>
                     </form>
                   </div>
+                  <p class="mb-0">Have an account? 
+                    <router-link class="text-white-50 fw-bold" to="/login">Back to Log-in</router-link>
+                    </p>
                 </div>
               </div>
             </div>

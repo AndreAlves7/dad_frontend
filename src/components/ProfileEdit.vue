@@ -242,7 +242,7 @@ const closeAllPopups = () => {
         </div>
         <div v-if="showConfirmationCodeInput" class="form-group">
           <label for="confirmation_code">Confirmation Code:</label>
-          <input v-model="formData.confirmation_code" type="text" class="form-control" id="confirmation_code" placeholder="Enter confirmation code">
+          <input v-model="formData.confirmation_code" type="password" class="form-control" id="confirmation_code" placeholder="Enter confirmation code">
         </div>
         <div class="form-group" style="margin-bottom: 20px;">
           <label for="password">Password:</label>
