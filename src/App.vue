@@ -153,7 +153,7 @@ const logout = async () => {
               <router-link class="nav-link" :class="{ active: $route.name === 'AdminCategories' }"
                           :to="{ name: 'AdminCategories' }" @click="clickMenuOption">
                 <i class="bi bi-house"></i>
-                Categories
+                Default Categories
               </router-link>
             </li>
           </ul>

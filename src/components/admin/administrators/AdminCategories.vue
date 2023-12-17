@@ -76,6 +76,7 @@ const deleteSelectedRow = async () =>{
     modalDelete.value = true
     };
 
+
 </script>
 
 <template>
@@ -95,7 +96,7 @@ const deleteSelectedRow = async () =>{
         <div class="row">
         <div class="col-12 mt-3">
             <div class="mb-3">
-                <h2>Transactions</h2>
+                <h2>Default Categories</h2>
                 <hr>
             </div>
             
@@ -113,6 +114,9 @@ const deleteSelectedRow = async () =>{
         <BIconSearch />
         <InputText v-model="filters['global'].value" placeholder="Keyword Search" />
         </span>
+        <button type="button" class="btn btn-primary">
+        Create Default Category
+        </button>
     </div>
     </template>
 
