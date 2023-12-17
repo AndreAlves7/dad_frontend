@@ -1,7 +1,7 @@
 <script setup>
 import axios from 'axios';
 import { ref ,computed, onMounted} from "vue";
-import { BIconSearch } from 'bootstrap-icons-vue'
+import { BIconSearch, BIconPencil, BIconTrash } from 'bootstrap-icons-vue'
 import AdminCategoryEdit from '../administrators/AdminCategoryEdit.vue';
 
 import DataTable from 'primevue/datatable';
@@ -17,7 +17,12 @@ const adminStore = useAdminStore()
 const categories = ref([])
 const showEditPopup = ref(false)
 
-const clickEditButton = () => {
+const modalDelete = ref(false)
+const categoryToDelete = ref(null)
+const selectedCategory = ref(null)
+
+const clickEditButton = (data) => {
+    selectedCategory.value = data
     showEditPopup.value = true
 }
 
@@ -52,27 +57,37 @@ onMounted (() => {
     loadCategories()
 })
 
-const selectedCategory = ref(null);
-
-const isSelectedCategory = computed(() => {
-  return selectedCategory.value !== null;
-})
 
 const deleteSelectedRow = async () =>{
+    
     try {
-        await axios.delete('/defaultcategory/' + selectedCategory.value.id);
+        await axios.delete('/defaultcategory/' + categoryToDelete.value.id);
         toast.success(`Category deleted successfully!`);
     } catch (error) {
         toast.error(error.response)
-        debugger
     }finally{
+        modalDelete.value = false
         loadCategories()
     }
 }
 
+    const modalDeleteUser = async (data) => {
+    categoryToDelete.value = data
+    modalDelete.value = true
+    };
+
 </script>
 
 <template>
+
+<BModal v-model="modalDelete" :title="'Delete category ' + categoryToDelete?.name">
+          <p>Are you sure you want to delete the category?</p>
+
+          <template #footer="{ cancel }">
+            <button class="btn btn-secondary" @click="cancel()">Cancel</button>
+            <button class="btn btn-danger" @click="deleteSelectedRow(userToDelete)">Delete</button>
+          </template>
+        </BModal>
 
 <AdminCategoryEdit :showEditPopup="showEditPopup" :selectedCategory="selectedCategory" @close-popup="handleClosePopup"/>
 
@@ -98,23 +113,6 @@ const deleteSelectedRow = async () =>{
         <BIconSearch />
         <InputText v-model="filters['global'].value" placeholder="Keyword Search" />
         </span>
-
-        <div>
-            <button
-            :class="{ 'btn btn-success': isSelectedCategory, 'btn btn-secondary': !isSelectedCategory }"
-            :disabled="!isSelectedCategory"
-            @click="clickEditButton">
-            Edit Selected Row
-        </button>
-
-            <button
-            :class="{ 'btn btn-danger': isSelectedCategory, 'btn btn-secondary': !isSelectedCategory }"
-            :disabled="!isSelectedCategory"  style="margin-left: 10px"
-            @click="deleteSelectedRow">
-            Delete Selected Row
-        </button>
-        </div>
-        
     </div>
     </template>
 
@@ -135,6 +133,19 @@ const deleteSelectedRow = async () =>{
       <template #body="{ data }">
         <div class="flex align-items-center gap-2">
           <span>{{ data.name }}</span>
+        </div>
+      </template>
+    </Column>
+    <Column header="Actions" style="width: 5%">
+      <template #body="{ data }">
+        <div>
+            <button class="btn btn-xs btn-light" @click="clickEditButton(data)">
+                    <BIconPencil class="bi bi-xs" />
+                </button>
+
+                <button class="btn btn-xs btn-light" @click="modalDeleteUser(data)" style="margin-left: 10px;">
+                    <BIconTrash class="bi bi-xs" />
+            </button>
         </div>
       </template>
     </Column>
