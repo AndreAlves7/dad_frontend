@@ -42,7 +42,7 @@ const logout = async () => {
 
 <template>
   
-    <ProfileEdit :showProfilePopup="showProfilePopup" @close-popup="handleClosePopup"/>  
+  <ProfileEdit v-if="userStore.user" :showProfilePopup="showProfilePopup" @close-popup="handleClosePopup"/>  
 
   <nav class="navbar navbar-expand-md navbar-dark bg-dark sticky-top flex-md-nowrap p-0 shadow" v-if="userStore.user">
     <div class="container-fluid">
