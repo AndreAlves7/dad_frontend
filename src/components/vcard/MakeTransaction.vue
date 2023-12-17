@@ -1,31 +1,40 @@
 <template>
+  <div class="container">
+      <div class="row">
+        <div class="mt-3">
+            <h2>Make a Transaction</h2>
+            <hr>
+        </div>
+  <div class="card bg-light p-3">
+            <div class="mb-2">
+
     <div class="container">
       <form @submit.prevent="submitForm">
-        <div class="form-group">
+        <div class="form-group custom-margin">
           <label for="transactionValue">Transaction Value</label>
-          <InputNumber v-model="value" inputId="currency-germany" mode="currency" currency="EUR" locale="de-DE" />
+          <InputNumber v-model="value" inputId="currency-germany" mode="currency" currency="EUR" locale="de-DE" style="margin-left: 40px ;" />
         </div>
-        <div class="form-group">
+        <div class="form-group custom-margin">
           <label for="paymentType">Payment Type</label>
-          <Dropdown v-model="selectedType" :options="paymentTypes" optionLabel="name" placeholder="Payment Type" class="w-full"   />
+          <Dropdown v-model="selectedType" :options="paymentTypes" optionLabel="name" placeholder="Payment Type" class="w-full" style="margin-left: 61px ;" />
         </div>
-        <div class="form-group">
+        <div class="form-group custom-margin">
           <label for="paymentType">Reference </label>
-          <InputText v-model="form.referenceValue" id="referenceValue" />
-          <!-- <InputMask id="basic" v-model="value" mask="aa99999999999999999999999" placeholder="aa99999999999999999999999" /> -->
+          <InputText v-model="form.referenceValue" id="referenceValue" style="margin-left: 85px ;" />
         </div>
-        <div>
-          <!-- category -->
+        <div class = "custom-margin">
           <label for="category">Category</label>
-          <Dropdown v-model="selectedCategory" :options="categories" optionLabel="name" placeholder="Category" class="w-full"   />
+          <Dropdown v-model="selectedCategory" :options="categories" optionLabel="name" placeholder="Category" class="w-full" style="margin-left: 90px ;" />
         </div>
-        <div>
-          <!-- description -->
+        <div class = "custom-margin">
           <label for="description">Description</label>
-          <InputText v-model="form.description" id="description" />
+          <InputText v-model="form.description" id="description" style="margin-left: 76px ;" />
         </div>
 
-        <button type="submit">Submit</button>
+        <br>        
+        <button type="submit" class="btn btn-primary btn-submit">
+          Submit
+        </button>
       </form>
 
       <div v-if="errors.length > 0">
@@ -34,8 +43,12 @@
           <li v-for="error in errors" :key="error">{{ error }}</li>
         </ul>
 
+            </div>
+          </div>
+        </div>
       </div>
     </div>
+  </div>
   </template>
   
 <script setup >
@@ -161,5 +174,15 @@
 </script>
   
 <style scoped>
+.btn-submit {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
 
+.btn-submit:hover {
+  background-color: #18125f; 
+  color: #fff; 
+}
+.custom-margin {
+  margin-bottom: 15px; 
+}
 </style>
