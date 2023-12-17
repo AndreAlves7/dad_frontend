@@ -1,28 +1,3 @@
-<template>
-    <!-- create admin -->
-    <div class="container">
-        <div class="row">
-            <div class="col-12 mt-3">
-                <h2>Create Admin</h2>
-                <form @submit.prevent="createAdmin">
-                    <div class="mb-3">
-                        <label for="name" class="form-label">Name</label>
-                        <input v-model="admin.name" type="text" class="form-control" id="name" placeholder="Name">
-                    </div>
-                    <div class="mb-3">
-                        <label for="email" class="form-label">Email address</label>
-                        <input v-model="admin.email" type="email" class="form-control" id="email" placeholder="Enter email">
-                    </div>
-                    <div class="mb-3">
-                        <label for="password" class="form-label">Password</label>
-                        <input v-model="admin.password" type="password" class="form-control" id="password" placeholder="Password">
-                    </div>
-                    <button type="submit" class="btn btn-primary">Create</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</template>
 
 <script setup>
 import { ref } from 'vue'
@@ -52,6 +27,36 @@ const createAdmin = async () => {
     }
 }
 
-
-
+const exit = () => {
+    router.push({ name: 'Admins' });
+}
 </script>
+
+<template>
+    <div class="container">
+        <div class="row">
+            <div class="col-12 mt-3">
+                <h2>Create Admin</h2>
+                <form @submit.prevent="createAdmin">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Name</label>
+                        <input v-model="admin.name" type="text" class="form-control" id="name" placeholder="Name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email address</label>
+                        <input v-model="admin.email" type="email" class="form-control" id="email" placeholder="Enter email">
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <input v-model="admin.password" type="password" class="form-control" id="password" placeholder="Password">
+                    </div>
+
+                    <div class="d-flex" style="gap: 25px;">
+                        <button type="submit" class="btn btn-primary">Create</button>
+                        <button type="button" class="btn btn-danger ml-2" @click="exit">Exit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</template>

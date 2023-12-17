@@ -119,7 +119,7 @@ const logout = async () => {
               </router-link>
             </li>
           </ul>
-
+          
           <h6 v-if="userStore.userType == 'A'"
            class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted" >
             <span>Administration</span>
@@ -146,6 +146,13 @@ const logout = async () => {
                           :to="{ name: 'CreditTransaction' }" @click="clickMenuOption">
                 <i class="bi bi-house"></i>
                 Transaction
+              </router-link>
+            </li>
+            <li class="nav-item">
+              <router-link class="nav-link" :class="{ active: $route.name === 'AdminCategories' }"
+                          :to="{ name: 'AdminCategories' }" @click="clickMenuOption">
+                <i class="bi bi-house"></i>
+                Categories
               </router-link>
             </li>
           </ul>
