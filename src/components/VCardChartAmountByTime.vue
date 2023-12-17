@@ -15,8 +15,6 @@ const loadTransactions = async () => {
 
         const response = await axios.get(`/vcard/statistics/${user.value.id}/${user.value.user_type}`);
         transactions.value = response.data;
-
-        console.log(transactions.value)
     } catch (error) {
         console.error(error);
     }
