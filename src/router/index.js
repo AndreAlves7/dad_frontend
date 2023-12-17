@@ -11,7 +11,9 @@ import adminCreate from "../components/admin/administrators/adminCreate.vue"
 import CreditTransaction from "../components/admin/transactions/CreditTransactionCreate.vue"
 import Transactions from "../components/TransactionsTable.vue"
 import MakeTransaction from "../components/vcard/MakeTransaction.vue"
-
+import Categories from "../components/categories/Categories.vue"
+import Category from "../components/categories/Category.vue"
+import CategoryCreate from "../components/categories/CategoryCreate.vue"
 
 let handlingFirstRoute = true
 
@@ -73,6 +75,22 @@ const router = createRouter({
             path: '/admin/transactions/add',
             name: 'CreditTransaction',
             component: CreditTransaction
+        },
+        {
+            path: '/vcard/category',
+            name: 'Categories',
+            component: Categories
+        },
+        {
+            path: '/vcard/category/:id',
+            name: 'Category',
+            component: Category,
+            props: route => ({ id: parseInt(route.params.id)})
+        },
+        {
+            path: '/vcard/category/add',
+            name: 'AddCategory',
+            component: CategoryCreate
         }
     ]
 })

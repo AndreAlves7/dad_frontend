@@ -118,6 +118,13 @@ const logout = async () => {
                 Transactions
               </router-link>
             </li>
+            <li class="nav-item">
+              <router-link class="nav-link" :class="{ active: $route.name === 'Categories' }"
+                          :to="{ name: 'Categories' }" @click="clickMenuOption">
+                <i class="bi bi-house"></i>
+                Categories
+              </router-link>
+            </li>
           </ul>
 
           <h6 v-if="userStore.userType == 'A'"
