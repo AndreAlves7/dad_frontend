@@ -103,10 +103,10 @@
 
 
   const getCategories = () => {
-    axios.get(`${routes.categories}/${userStore.userId}`)
+    axios.get(`${routes.vcard}/${userStore.userId}/category`)
       .then(function (response) {
         console.log(response);
-        const { data }  = response
+        const { data }  = response.data
         const categoriesFiltered = data.filter(category => category.type === 'D')
 
         categories.value = categoriesFiltered
