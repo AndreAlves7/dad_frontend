@@ -1,6 +1,6 @@
 
 <script setup >
-    import { ref, onMounted } from 'vue'
+    import { ref, onMounted, inject } from 'vue'
     import InputNumber from 'primevue/inputnumber';
     import InputText from 'primevue/inputtext';
     import Dropdown from 'primevue/dropdown';
@@ -11,6 +11,7 @@
     import { useVcardsStore } from "../../stores/vcard.js"
 
     const vcardsStore = useVcardsStore()
+    const socket = inject('socket')
     const toast = useToast()
     const value = ref(0);
     const form = ref({
@@ -56,6 +57,7 @@
       })
         .then(function (response) {
           console.log(response);
+          socket.emit('NewTransaction', response.data)
           toast.success('Transaction created successfully!')
         })
         .catch(function (error) {

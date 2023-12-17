@@ -12,9 +12,6 @@ import {useTransactionStore} from '../stores/transaction.js';
 
 const transactionStore = useTransactionStore()
 
-
-
-
 const filters = ref(
     {
         global: { value: null, matchMode: FilterMatchMode.CONTAINS }
