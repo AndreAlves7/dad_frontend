@@ -204,13 +204,11 @@ const deleteUser = async () => {
 }
 
 const logout = async () => {
-  if (await userStore.logout()) {
+  await userStore.logout()
     toast.success('Sucessfully logged out of the application!')
-    router.push({ name: 'Login' })
     closeAllPopups()
-  } else {
-    toast.error('There was a problem logging out of the application!')
-  }
+    router.push({ name: 'Login' })
+  
 }
 
 

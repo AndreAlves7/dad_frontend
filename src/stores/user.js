@@ -64,6 +64,7 @@ export const useUserStore = defineStore('user', () => {
             clearUser()
             return true
         } catch (error) {
+            clearUser()
             return false
         }
     }
