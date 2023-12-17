@@ -3,6 +3,7 @@ import axios from 'axios'
 import { ref } from 'vue'
 import { useToast } from "vue-toastification"
 import { useRouter } from 'vue-router'
+import { BIconRocketTakeoff } from 'bootstrap-icons-vue'
 
 const toast = useToast()
 const router = useRouter()
@@ -98,7 +99,10 @@ const handleFileChange = (event) => {
               <div class="card bg-dark text-white" style="border-radius: 1rem;">
                 <div class="card-body p-5 text-center">
                   <div class="mb-md-4 mt-md-4 pb-5">
-                    <h2 class="fw-bold mb-2 text-uppercase">VCARD</h2>
+                    <h2 class="fw-bold mb-2 text-uppercase">
+                      <BIconRocketTakeoff class="me-2 fs-1"/>
+                      Rabolut
+                    </h2>
                     <p class="text-white-50 mb-5">Start using vCard right now!</p>
                     <form novalidate @submit.prevent="signup">
                         <div class="form-group form-outline form-white mb-4">
