@@ -5,4 +5,5 @@ export default {
     vcard: '/vcard',
     admins: '/user',
     transactions: '/transaction',
+    defaultCategory: '/defaultcategory',
 }

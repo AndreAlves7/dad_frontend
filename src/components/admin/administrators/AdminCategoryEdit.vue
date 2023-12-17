@@ -2,6 +2,7 @@
 import axios from 'axios';
 import { ref, onMounted} from 'vue'
 import { useToast } from "vue-toastification"
+import routes from "../../../utils/routes.js"
 
 const toast = useToast()
 
@@ -59,7 +60,7 @@ const isValidInputs = () => {
 const performUpdate = async () => {
     try {
         if (isValidInputs()) {
-            await axios.patch(`/defaultcategory/${props.selectedCategory.id}`, formData.value)
+            await axios.patch(`${routes.defaultCategory}/${props.selectedCategory.id}`, formData.value)
             toast.success('User data correctly Updated!')
 
             closePopupWithClear()
