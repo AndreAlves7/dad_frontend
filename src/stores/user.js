@@ -47,8 +47,8 @@ export const useUserStore = defineStore('user', () => {
             const response = await axios.post(routes.login, credentials)
             axios.defaults.headers.common.Authorization = "Bearer " + response.data.access_token
             sessionStorage.setItem('token', response.data.access_token)
-            socket.emit('loggedIn', user.value)
             await loadUser()
+            socket.emit('loggedIn', user.value)
             return true
         }
         catch(error) {
@@ -85,8 +85,8 @@ export const useUserStore = defineStore('user', () => {
         let storedToken = sessionStorage.getItem('token')
         if (storedToken) {
             axios.defaults.headers.common.Authorization = "Bearer " + storedToken
-            socket.emit('loggedIn', user.value)
             await loadUser()
+            socket.emit('loggedIn', user.value)
             return true
         }
         clearUser()

@@ -3,11 +3,18 @@ import axios from "axios"
 import { defineStore } from "pinia"
 import routes from "../utils/routes.js"
 import { useUserStore } from "./user.js"
+import { inject } from "vue"
+import { useToast } from "vue-toastification"
 
 export const useTransactionStore = defineStore('transactions', () => {
 
-    const transactions = ref([])
 
+    const socket = inject("socket")
+
+    const toast = useToast()
+
+
+    const transactions = ref([])
     const userStore = useUserStore()
 
 
@@ -33,6 +40,11 @@ export const useTransactionStore = defineStore('transactions', () => {
         }
 
     }
+
+    socket.on('NewTransaction', (transaction) => {
+        transactions.value.push(transaction)
+        toast.success(`A new transaction was created (#${transaction.id} : ${transaction.name})`)
+    })
 
     return {
         createManualTransaction,
