@@ -12,7 +12,8 @@ const newUser = ref({
   password: '',
   name: '',
   email: '',
-  confirmation_code: ''
+  confirmation_code: '',
+  photo_url: '',
 })
 
 const errors = ref([])
@@ -61,6 +62,31 @@ const signup = async () => {
         newUser.value.confirmation_code = ''
     }
 }
+
+const handleFileChange = (event) => {
+  try{
+    const file = event.target.files[0];
+
+    if (!file) {
+      formData.value.photo_url = null
+    } else {
+      const reader = new FileReader()
+      reader.addEventListener(
+          'load',
+          () => {
+            newUser.value.photo_url = reader.result
+          },
+          false,
+      )
+      if (file) {
+        reader.readAsDataURL(file)
+      }
+    }
+  } catch (error) {
+    console.log(error)
+  }
+};
+
 
 </script>
 
@@ -127,7 +153,7 @@ const signup = async () => {
                         </div>
                         <div class="mb-2">
                             <label for="formFileSm" class="form-label">Profile Photo</label>
-                            <input class="form-control form-control-sm" id="formFileSm" type="file">
+                            <input v-on:change="handleFileChange" class="form-control form-control-sm" id="formFileSm" type="file">
                         </div>
                         <button @click="signup" class="btn btn-outline-light px-5 mt-5" type="button">Create account</button>
                     </form>
