@@ -5,19 +5,16 @@ import VCardChartPaymentType from './VCardChartPaymentType.vue';
 import VCardChartAmountTotals from './VCardChartAmountTotals.vue';
 
 
-import { ref } from 'vue'
-import axios from 'axios'
-import routes from '../utils/routes'
+import { ref,onMounted } from 'vue'
 import { useUserStore } from '../stores/user.js'
+import { useVcardsStore } from "../stores/vcard.js"
 
-const vcard = ref(null)
+const vcardsStore = useVcardsStore()
 const userStore = useUserStore()
 
-// onMounted(async()=>{
-//   // const result = await axios.ge/t('/vcard/' + userStore.user.username);
-//   const result = await axios.get(`${routes.vcard}/${userStore.user.username}`);
-//   vcard.value = result.data.data;
-// })
+  onMounted(()=>{
+  vcardsStore.loadVcard(userStore.user.id)
+  })
 
 </script>
 
@@ -27,11 +24,15 @@ const userStore = useUserStore()
     <div v-if="userStore.userType == 'A'" class="bg-custom p-3 text-white">
       <h4>Welcome  {{ userStore.user?.name }}</h4>
     </div>
-    <div v-else class="bg-custom p-3 text-white"> 
+    
+    <div v-else class="bg-custom p-3 text-white">   
       <h4>Welcome to your virtual card  {{ userStore.user?.name }}</h4>
+      <div class="p-3 text-white">
+      <h5 style="font-size: 1.3rem;">Current Balance {{ vcardsStore.vcard.balance }} &euro;</h5>
+      </div>
     </div>
-
   </div>
+
 
   <div class="w-75 h-30rem container">
     <div class="row align-items-center">
