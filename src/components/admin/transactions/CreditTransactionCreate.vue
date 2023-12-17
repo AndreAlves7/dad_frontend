@@ -139,38 +139,24 @@ onMounted (() => {
                     inputId="vcardRecipient"
                     filter 
                     filterPlaceholder="Search by phone number" 
-                    placeholder="Select a vCard">
-                    <!-- <template #value="slotProps">
-                    <div v-if="slotProps.value" class="flex align-items-center">
-                        <img :alt="slotProps.value.label" src="https://primefaces.org/cdn/primevue/images/flag/flag_placeholder.png" style="width: 18px" />
-                    <div>{{ slotProps.value.phone_number }}</div>
-                    </div>
-                        <span v-else>
-                            {{ slotProps.placeholder }}
-                        </span>
-                        </template>
-                        <template #option="slotProps">
-                            <div class="flex align-items-center">
-                                <img :alt="slotProps.option.label" src="https://primefaces.org/cdn/primevue/images/flag/flag_placeholder.png" :class="`mr-2 flag flag-${slotProps.option.code.toLowerCase()}`" style="width: 18px" />
-                            <div>{{ slotProps.option.name }}</div>
-                            </div>
-                        </template> -->
+                    placeholder="Select a vCard"
+                    style="margin-left:40px;">
                     </Dropdown>
                 </div>
 
                 <div class="mt-3">
                     <label for="moneyValue" class="font-bold block mb-2"> Recipient will get </label>
-                    <InputNumber v-model="valueToSend" inputId="moneyValue" mode="currency" currency="EUR" locale="pt-PT" placeholder="Enter value" />
+                    <InputNumber v-model="valueToSend" inputId="moneyValue" mode="currency" currency="EUR" locale="pt-PT" placeholder="Enter value" style="margin-left:33px;"/>
                 </div>
 
                 <div class="mt-3">
                   <label>Payment Type</label>
-                  <Dropdown v-model="selectedPaymentType" :options="paymentTypes" optionLabel="name" placeholder="Select a payment type" class="w-full md:w-14rem" />
+                  <Dropdown v-model="selectedPaymentType" :options="paymentTypes" optionLabel="name" placeholder="Select a payment type" class="w-full md:w-14rem" style="margin-left:52px;" />
                 </div>
 
                 <div class="mt-3">
                     <label for="payment_reference">Payment Reference</label>
-                    <InputText id="payment_reference" v-model="paymentReference" placeholder="Enter reference" />
+                    <InputText id="payment_reference" v-model="paymentReference" placeholder="Enter reference" style="margin-left:20px;"/>
                 </div>
             </div>
         </div>

@@ -4,6 +4,7 @@ import { useRouter, RouterView } from 'vue-router';
 import { useToast } from "vue-toastification"
 import { useUserStore } from './stores/user.js'
 import { ref } from 'vue'
+import { BIconRocketTakeoff } from 'bootstrap-icons-vue'
 
 const toast = useToast()
 const router = useRouter()
@@ -47,8 +48,8 @@ const logout = async () => {
   <nav class="navbar navbar-expand-md navbar-dark bg-dark sticky-top flex-md-nowrap p-0 shadow" v-if="userStore.user">
     <div class="container-fluid">
       <router-link class="navbar-brand col-md-3 col-lg-2 me-0 px-3" :to="{ name: 'home' }" @click="clickMenuOption">
-        <img src="@/assets/logo.svg" alt="" width="30" height="24" class="d-inline-block align-text-top">
-        App name
+        <BIconRocketTakeoff class="me-2 fs-3"/>
+                Rabolut
       </router-link>
       <button id="buttonSidebarExpandId" class="navbar-toggler" type="button" data-bs-toggle="collapse"
         data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
@@ -65,18 +66,18 @@ const logout = async () => {
             </a>
             <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
               <li>
-                <a class="dropdown-item" @click="clickProfileOption">
+                <button class="dropdown-item" @click="clickProfileOption" >
                   <i class="bi bi-person-square"></i>
                   Profile
-                </a>
+                </button>
               </li>
               <li>
                 <hr class="dropdown-divider">
               </li>
               <li>
-                <a class="dropdown-item" @click.prevent="logout">
+                <button class="dropdown-item" @click.prevent="logout">
                   <i class="bi bi-arrow-right"></i>Logout
-                </a>
+                </button>
               </li>
             </ul>
           </li>
@@ -95,13 +96,6 @@ const logout = async () => {
                           :to="{ name: 'Dashboard' }" @click="clickMenuOption">
                 <i class="bi bi-house"></i>
                 Dashboard
-              </router-link>
-            </li>
-            <li class="nav-item">
-              <router-link class="nav-link" :class="{ active: $route.name === 'MakeTransaction' }" v-if="userStore.userType != 'A'"
-                          :to="{ name: 'MakeTransaction' }" @click="clickMenuOption">
-                <i class="bi bi-house"></i>
-                MakeTransaction
               </router-link>
             </li>
           </ul>
@@ -125,8 +119,15 @@ const logout = async () => {
                 Categories
               </router-link>
             </li>
+            <li class="nav-item">
+              <router-link class="nav-link" :class="{ active: $route.name === 'MakeTransaction' }" v-if="userStore.userType != 'A'"
+                          :to="{ name: 'MakeTransaction' }" @click="clickMenuOption">
+                <i class="bi bi-house"></i>
+                Make a Transaction
+              </router-link>
+            </li>
           </ul>
-
+          
           <h6 v-if="userStore.userType == 'A'"
            class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted" >
             <span>Administration</span>
@@ -153,6 +154,13 @@ const logout = async () => {
                           :to="{ name: 'CreditTransaction' }" @click="clickMenuOption">
                 <i class="bi bi-house"></i>
                 Transaction
+              </router-link>
+            </li>
+            <li class="nav-item">
+              <router-link class="nav-link" :class="{ active: $route.name === 'AdminCategories' }"
+                          :to="{ name: 'AdminCategories' }" @click="clickMenuOption">
+                <i class="bi bi-house"></i>
+                Categories
               </router-link>
             </li>
           </ul>

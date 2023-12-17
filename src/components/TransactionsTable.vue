@@ -6,27 +6,11 @@ import { BIconSearch } from 'bootstrap-icons-vue'
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import InputText from 'primevue/inputtext';
-import { useUserStore } from '../stores/user.js';
 import { FilterMatchMode  } from 'primevue/api';
+import {useTransactionStore} from '../stores/transaction.js';
 
-const userStore = useUserStore()
 
-const transactions = ref([])
-
-const loadTransactions = async () => {
-    try {
-        await userStore.loadUser()
-        // console.log(userStore.user)
-        const response = await axios.get('/vcard/transaction/' + userStore.user.id)
-        
-        transactions.value = response.data.transactions
-        // console.log(transactions.value)
-        loading.value = false
-    } catch (error) {
-        console.log(error)
-        loading.value = false
-    }
-}
+const transactionStore = useTransactionStore()
 
 const filters = ref(
     {
@@ -37,11 +21,20 @@ const filters = ref(
 
 const loading = ref(true);
 
+
+const selectedTransaction = ref();
+
+
+const loadTransactions = async () => {
+    loading.value = true
+    transactionStore.loadTransactions()
+    loading.value = false
+}
+
+
 onMounted (() => {
     loadTransactions()
 })
-
-const selectedTransaction = ref();
 
 </script>
 
@@ -55,7 +48,7 @@ const selectedTransaction = ref();
             </div>
             
 <DataTable v-model:filters="filters" :metaKeySelection="false" :loading="loading" 
-    removableSort  v-model:selection="selectedTransaction" :value="transactions"
+    removableSort  v-model:selection="selectedTransaction" :value="transactionStore.transactions"
     stateStorage="session" stateKey="table-vcards" paginator :rows="10" filterDisplay="menu"
     selectionMode="single" :globalFilterFields="['date', 'value', 'old_balance' , 
     'new_balance', 'payment_type', 'payment_reference', 'value']"

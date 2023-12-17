@@ -3,6 +3,7 @@ import axios from 'axios'
 import { ref } from 'vue'
 import { useToast } from "vue-toastification"
 import { useRouter } from 'vue-router'
+import { BIconRocketTakeoff } from 'bootstrap-icons-vue'
 
 const toast = useToast()
 const router = useRouter()
@@ -12,7 +13,8 @@ const newUser = ref({
   password: '',
   name: '',
   email: '',
-  confirmation_code: ''
+  confirmation_code: '',
+  photo_url: '',
 })
 
 const errors = ref([])
@@ -62,6 +64,31 @@ const signup = async () => {
     }
 }
 
+const handleFileChange = (event) => {
+  try{
+    const file = event.target.files[0];
+
+    if (!file) {
+      formData.value.photo_url = null
+    } else {
+      const reader = new FileReader()
+      reader.addEventListener(
+          'load',
+          () => {
+            newUser.value.photo_url = reader.result
+          },
+          false,
+      )
+      if (file) {
+        reader.readAsDataURL(file)
+      }
+    }
+  } catch (error) {
+    console.log(error)
+  }
+};
+
+
 </script>
 
 <template>
@@ -72,7 +99,10 @@ const signup = async () => {
               <div class="card bg-dark text-white" style="border-radius: 1rem;">
                 <div class="card-body p-5 text-center">
                   <div class="mb-md-4 mt-md-4 pb-5">
-                    <h2 class="fw-bold mb-2 text-uppercase">VCARD</h2>
+                    <h2 class="fw-bold mb-2 text-uppercase">
+                      <BIconRocketTakeoff class="me-2 fs-1"/>
+                      Rabolut
+                    </h2>
                     <p class="text-white-50 mb-5">Start using vCard right now!</p>
                     <form novalidate @submit.prevent="signup">
                         <div class="form-group form-outline form-white mb-4">
@@ -127,11 +157,14 @@ const signup = async () => {
                         </div>
                         <div class="mb-2">
                             <label for="formFileSm" class="form-label">Profile Photo</label>
-                            <input class="form-control form-control-sm" id="formFileSm" type="file">
+                            <input v-on:change="handleFileChange" class="form-control form-control-sm" id="formFileSm" type="file">
                         </div>
                         <button @click="signup" class="btn btn-outline-light px-5 mt-5" type="button">Create account</button>
                     </form>
                   </div>
+                  <p class="mb-0">Have an account? 
+                    <router-link class="text-white-50 fw-bold" to="/login">Back to Log-in</router-link>
+                    </p>
                 </div>
               </div>
             </div>

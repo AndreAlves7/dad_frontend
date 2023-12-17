@@ -6,4 +6,5 @@ export default {
     admins: '/user',
     transactions: '/transaction',
     categories: '/category',
+    defaultCategory: '/defaultcategory',
 }
