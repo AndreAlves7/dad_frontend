@@ -92,18 +92,38 @@ const closeDeletePopup = () => {
 }
 
 const handleFileChange = (event) => {
+  try{
     const file = event.target.files[0];
-    formData.value.photo_url = file;
+
+    if (!file) {
+      formData.value.photo_url = null
+    } else {
+      const reader = new FileReader()
+      reader.addEventListener(
+          'load',
+          () => {
+            formData.value.photo_url = reader.result
+          },
+          false,
+      )
+      if (file) {
+        reader.readAsDataURL(file)
+      }
+    }
+  } catch (error) {
+    console.log(error)
+  }
 };
 
 const isValidInputs = () => {
     let isValid = true
     errors.value = {}
-    if (formData.value.confirmation_code.length !== 0 && formData.value.confirmation_code.length < 3) {
+    console.log(formData.value)
+    if (formData.value.confirmation_code?.length !== 0 && formData.value.confirmation_code.length < 3) {
         errors.value['pin'] = ['Pin must have at least 3 digits!']
         isValid = false
     }
-    if (formData.value.password.length !== 0 && formData.value.password.length < 3) {
+    if (formData.value.password?.length !== 0 && formData.value.password.length < 3) {
         errors.value['pin'] = ['Password must have at least 3 digits!']
         isValid = false
     }
@@ -224,12 +244,12 @@ const closeAllPopups = () => {
           <label for="confirmation_code">Confirmation Code:</label>
           <input v-model="formData.confirmation_code" type="text" class="form-control" id="confirmation_code" placeholder="Enter confirmation code">
         </div>
-        <div class="form-group">
+        <div class="form-group" style="margin-bottom: 20px;">
           <label for="password">Password:</label>
           <input v-model="formData.password" type="password" class="form-control" id="password" placeholder="Enter your password">
         </div>
         
-        <div class="mb-3">
+        <div v-if="!isUserAdmin" class="mb-3">
           <label for="formFileSm" class="form-label">Profile Photo</label>
           <input v-on:change="handleFileChange" class="form-control form-control-sm" id="formFileSm" type="file">
         </div>
