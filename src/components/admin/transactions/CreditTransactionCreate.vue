@@ -9,6 +9,7 @@ import InputText from 'primevue/inputtext';
 import { useToast } from "vue-toastification"
 
 const serverBaseUrl = inject("serverBaseUrl")
+const socket = inject("socket")
 
 const toast = useToast()
 const vcardsStore = useVcardsStore()
@@ -59,13 +60,15 @@ const save = async () => {
   }
 
   try {
-    await transactionStore.createManualTransaction({
+   const response = await transactionStore.createManualTransaction({
         vcard: selectedVcard.value.phone_number,
         value: valueToSend.value,
         payment_type: selectedPaymentType.value.name,
         payment_reference: paymentReference.value
     })
     toast.success("Manual transaction created successfully")
+    console.log(response)
+    socket.emit('NewTransaction', response)
   } catch (error) {
     toast.error(error.response.data.message)
   }

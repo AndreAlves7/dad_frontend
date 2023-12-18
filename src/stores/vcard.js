@@ -68,7 +68,7 @@ export const useVcardsStore = defineStore('vcards', () => {
         console.log('newTransaction',transaction)
         console.log(userStore.userId)
         console.log(userStore.userId)
-        toast.success(`A new transaction was created (#${transaction.id} : ${transaction.name})`)
+        toast.success(`A new transaction was created (#${transaction.id})`)
         await loadVcard(userStore.userId)
         
     })

@@ -21,7 +21,7 @@ export const useTransactionStore = defineStore('transactions', () => {
         newTransaction.type = 'C'
 
         const response = await axios.post(routes.transactions, newTransaction)
-        return response.data.data
+        return response.data
     }
 
 
