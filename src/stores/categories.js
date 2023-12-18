@@ -1,9 +1,12 @@
 import { ref } from "vue"
 import axios from "axios"
 import { defineStore } from "pinia"
-import routes from "../utils/routes.js"
+import { useUserStore } from '../stores/user.js'
+import routes from '../utils/routes'
 
-export const useCategoriesStore = defineStore('categories', () => {
+export const useCategoryStore = defineStore('category', () => {
+
+    const userStore = useUserStore()
 
     const categories = ref([])
 
@@ -13,9 +16,9 @@ export const useCategoriesStore = defineStore('categories', () => {
         categories.value = []
     }
 
-    async function loadCategories() {
+    async function loadCategories(phone_number) {
         try {
-            const response = await axios.get(routes.category)
+            const response = await axios.get(`vcard/${phone_number}/category`)
             categories.value = response.data.data
             return categories.value
         } catch (error) {
@@ -24,46 +27,63 @@ export const useCategoriesStore = defineStore('categories', () => {
         }
     }
 
-    // async function loadVcard(phone_number) {
-    //     const response = await axios.get(routes.vcard + '/' + phone_number)
-    //     vcard.value = response.data.data
+    async function loadCategory(category_id) {  
+        try {
+            const response = await axios.get(`${routes.categories}/${category_id}`)
+            category.value = response.data.data
 
-    //     // update the current vcard in vcards ref array
-    //     if(vcard.value){
-    //         let vcardIndex = vcards.value.findIndex(vcard => vcard.phone_number === phone_number)
-    //         if(vcardIndex >= 0){
-    //             vcards.value[vcardIndex] = vcard.value
-    //         }
-    //     }
-    //     return vcard.value
-    // }
+            if(category.value){
+                let categIndex = categories.value.findIndex(category => category.id === category_id)
+                if(categIndex >= 0){
+                    categories.value[categIndex] = category.value
+                }
+            }
+            return category.value
+        } catch (error) {
+            category.value = {}
+            throw error
+        }
+    }
 
-    // async function updateVcard(updateVcard) {
-    //     const response = await axios.put('vcard/' + updateVcard.phone_number, updateVcard)
-    //     let vcardIndex = vcards.value.findIndex((i) => i.phone_number === response.data.data.phone_number)
-    //     if (vcardIndex >= 0) {
-    //         vcards.value[vcardIndex] = response.data.data
-    //     }
-    //     return response.data.data
-    // }
+    async function updateCategory(updateCategory) {
+        if(categories.value.length == 0) {
+            loadCategories(userStore.user.phone_number)
+        }
+        const response = await axios.put(`${routes.categories}/${updateCategory.id}`, updateCategory)
+        let categIndex = categories.value.findIndex((i) => i.id === response.data.data.id)
+        if (categIndex >= 0) {
+            categories.value[categIndex] = response.data.data
+        }
+        return response.data.data
+    }
 
-    // async function deleteVcard(deleteVcard) {
-    //     const response = await axios.delete('vcard/' + deleteVcard.phone_number)
-    //     let vcardIndex = vcards.value.findIndex((i) => i.phone_number === deleteVcard.phone_number)
-    //     if (vcardIndex >= 0) {
-    //         vcards.value.splice(vcardIndex, 1)
-    //     }
-    //     return response.data.data
-    // }
+    async function createCategory(newCategory) {
+        if(!newCategory || !newCategory.vcard){
+            return
+        }
+        const response = await axios.post(routes.categories, newCategory)
+        categories.value.push(response.data.data)
+        return response.data.data
+    }
+    
+    async function deleteCategory(deleteCategory) {
+        const response = await axios.delete(`${routes.categories}/${deleteCategory.id}`)
+        let categIndex = categories.value.findIndex((categ) => categ.id === deleteCategory.id)
+        if (categIndex >= 0) {
+            categories.value.splice(categIndex, 1)
+        }
+        return response.data.data
+    }
 
     return {
         categories,
         category,
         clearCategories,
-        loadCategories
-        // loadVcard,
-        // updateVcard,
-        // deleteVcard
+        loadCategories,
+        loadCategory,
+        updateCategory,
+        createCategory,
+        deleteCategory
     }
 
 })

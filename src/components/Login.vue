@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import { useToast } from "vue-toastification"
 import { useRouter, RouterLink } from 'vue-router'
 import { useUserStore } from '../stores/user.js'
+import { BIconRocketTakeoff } from 'bootstrap-icons-vue'
 
 const toast = useToast()
 const router = useRouter()
@@ -33,7 +34,10 @@ const login = async () => {
               <div class="card-body p-5 text-center">
                 <form novalidate @submit.prevent="login">
                   <div class="mb-md-5 mt-md-4 pb-5">
-                    <h2 class="fw-bold mb-2 text-uppercase">VCARD</h2>
+                    <h2 class="fw-bold mb-2 text-uppercase">
+                      <BIconRocketTakeoff class="me-2 fs-1"/>
+                      Rabolut
+                    </h2>
                     <p class="text-white-50 mb-5">Your favorite virtual card!</p>
                     <div class="form-group form-outline form-white mb-4">
                       <input v-model="credentials.username" id="emailInput" class="form-control" type="email" placeholder="Phone number" required />

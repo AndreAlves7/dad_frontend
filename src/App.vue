@@ -4,6 +4,7 @@ import { useRouter, RouterView } from 'vue-router';
 import { useToast } from "vue-toastification"
 import { useUserStore } from './stores/user.js'
 import { ref } from 'vue'
+import { BIconRocketTakeoff } from 'bootstrap-icons-vue'
 
 const toast = useToast()
 const router = useRouter()
@@ -47,8 +48,8 @@ const logout = async () => {
   <nav class="navbar navbar-expand-md navbar-dark bg-dark sticky-top flex-md-nowrap p-0 shadow" v-if="userStore.user">
     <div class="container-fluid">
       <router-link class="navbar-brand col-md-3 col-lg-2 me-0 px-3" :to="{ name: 'home' }" @click="clickMenuOption">
-        <img src="@/assets/logo.svg" alt="" width="30" height="24" class="d-inline-block align-text-top">
-        App name
+        <BIconRocketTakeoff class="me-2 fs-3"/>
+                Rabolut
       </router-link>
       <button id="buttonSidebarExpandId" class="navbar-toggler" type="button" data-bs-toggle="collapse"
         data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
@@ -112,6 +113,13 @@ const logout = async () => {
               </router-link>
             </li>
             <li class="nav-item">
+              <router-link class="nav-link" :class="{ active: $route.name === 'Categories' }"
+                          :to="{ name: 'Categories' }" @click="clickMenuOption">
+                <i class="bi bi-house"></i>
+                Categories
+              </router-link>
+            </li>
+            <li class="nav-item">
               <router-link class="nav-link" :class="{ active: $route.name === 'MakeTransaction' }" v-if="userStore.userType != 'A'"
                           :to="{ name: 'MakeTransaction' }" @click="clickMenuOption">
                 <i class="bi bi-house"></i>
@@ -152,7 +160,7 @@ const logout = async () => {
               <router-link class="nav-link" :class="{ active: $route.name === 'AdminCategories' }"
                           :to="{ name: 'AdminCategories' }" @click="clickMenuOption">
                 <i class="bi bi-house"></i>
-                Categories
+                Default Categories
               </router-link>
             </li>
           </ul>

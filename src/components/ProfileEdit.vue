@@ -204,13 +204,11 @@ const deleteUser = async () => {
 }
 
 const logout = async () => {
-  if (await userStore.logout()) {
+  await userStore.logout()
     toast.success('Sucessfully logged out of the application!')
-    router.push({ name: 'Login' })
     closeAllPopups()
-  } else {
-    toast.error('There was a problem logging out of the application!')
-  }
+    router.push({ name: 'Login' })
+  
 }
 
 
@@ -242,7 +240,7 @@ const closeAllPopups = () => {
         </div>
         <div v-if="showConfirmationCodeInput" class="form-group">
           <label for="confirmation_code">Confirmation Code:</label>
-          <input v-model="formData.confirmation_code" type="text" class="form-control" id="confirmation_code" placeholder="Enter confirmation code">
+          <input v-model="formData.confirmation_code" type="password" class="form-control" id="confirmation_code" placeholder="Enter confirmation code">
         </div>
         <div class="form-group" style="margin-bottom: 20px;">
           <label for="password">Password:</label>
