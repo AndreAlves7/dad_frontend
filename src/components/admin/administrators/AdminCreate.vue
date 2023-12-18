@@ -18,6 +18,14 @@ const admin = ref({
 })
 
 const createAdmin = async () => {
+
+    //a password tem de ter pelo menos 3 caracteres
+    if (admin.value.password.length < 3) {
+        toast.error('The password must have at least 3 characters!')
+        return
+    }
+
+
     if (await adminStore.createAdmin(admin.value)) {
         toast.success('Sucessfully created the administrator!');
         router.push({ name: 'Admins' })
@@ -40,15 +48,15 @@ const exit = () => {
                 <form @submit.prevent="createAdmin">
                     <div class="mb-3">
                         <label for="name" class="form-label">Name</label>
-                        <input v-model="admin.name" type="text" class="form-control" id="name" placeholder="Name">
+                        <input required v-model="admin.name" type="text" class="form-control" id="name" placeholder="Name">
                     </div>
                     <div class="mb-3">
                         <label for="email" class="form-label">Email address</label>
-                        <input v-model="admin.email" type="email" class="form-control" id="email" placeholder="Enter email">
+                        <input required v-model="admin.email" type="email" class="form-control" id="email" placeholder="Enter email">
                     </div>
                     <div class="mb-3">
                         <label for="password" class="form-label">Password</label>
-                        <input v-model="admin.password" type="password" class="form-control" id="password" placeholder="Password">
+                        <input required v-model="admin.password" type="password" class="form-control" id="password" placeholder="Password">
                     </div>
 
                     <div class="d-flex" style="gap: 25px;">

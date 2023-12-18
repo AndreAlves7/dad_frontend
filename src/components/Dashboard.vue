@@ -13,7 +13,9 @@ const vcardsStore = useVcardsStore()
 const userStore = useUserStore()
 
 onMounted(()=>{
-  vcardsStore.loadVcard(userStore.user?.id)
+  if (userStore.userType == 'V') {
+    vcardsStore.loadVcard(userStore.user?.id)
+  }
 })
 
 </script>

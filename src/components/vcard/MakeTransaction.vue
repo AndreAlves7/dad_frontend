@@ -87,6 +87,7 @@
         })
         .catch(function (error) {
           console.log(error);
+          toast.error('There was a problem creating the transaction!')
         });
     }
 
@@ -95,8 +96,14 @@
     function validatePaymentRef(selectedPaymentType, paymentReference){
       console.log(selectedPaymentType)
       console.log(paymentReference)
+
+
     switch(selectedPaymentType){
       case 'VCARD':
+        //se for igual ao id do user nao deixa
+        if(paymentReference == userStore.userId){
+          return "The VCARD payment reference cannot be the same as the user's id"
+        }
       if(!paymentReference.match(/^9[0-9]{8}$/)) {
           return "The VCARD payment reference must have 9 digits"
         }
@@ -150,7 +157,7 @@
 
   onMounted(() => {
     getCategories()
-    vcardsStore.loadVcard(userStore.user.id)
+    vcardsStore.loadVcard(userStore.user?.id)
   })
 
 

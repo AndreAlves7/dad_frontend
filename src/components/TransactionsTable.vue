@@ -1,15 +1,17 @@
 <script setup>
 import axios from 'axios';
 import { ref , onMounted} from "vue";
-import { BIconSearch } from 'bootstrap-icons-vue'
+import { BIconSearch,BIconPencil } from 'bootstrap-icons-vue'
 
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import InputText from 'primevue/inputtext';
 import { FilterMatchMode  } from 'primevue/api';
 import {useTransactionStore} from '../stores/transaction.js';
+import { useRouter } from 'vue-router'
 
 
+const router = useRouter()
 const transactionStore = useTransactionStore()
 
 const filters = ref(
@@ -31,6 +33,10 @@ const loadTransactions = async () => {
     loading.value = false
 }
 
+
+const editClick = (id) => {
+  router.push({ name: 'Transaction', params: { id } })
+}
 
 onMounted (() => {
     loadTransactions()
@@ -115,6 +121,15 @@ onMounted (() => {
                 <span>{{ data.payment_reference }}</span>
             </div>
         </template>
+    </Column>
+    
+
+    <Column header="Actions" style="width: 25%">
+      <template #body="{ data }">
+        <button class="btn btn-xs btn-light" @click="editClick(data.id)">
+          <BIconPencil class="bi bi-xs" />
+        </button>
+      </template>
     </Column>
 
     <template #empty> No Transactions found. </template>
