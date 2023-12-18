@@ -12,9 +12,9 @@ import { useVcardsStore } from "../stores/vcard.js"
 const vcardsStore = useVcardsStore()
 const userStore = useUserStore()
 
-  onMounted(()=>{
+onMounted(()=>{
   vcardsStore.loadVcard(userStore.user?.id)
-  })
+})
 
 </script>
 

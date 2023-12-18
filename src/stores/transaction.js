@@ -13,7 +13,6 @@ export const useTransactionStore = defineStore('transactions', () => {
 
     const toast = useToast()
 
-
     const transactions = ref([])
     const userStore = useUserStore()
 
@@ -42,9 +41,12 @@ export const useTransactionStore = defineStore('transactions', () => {
     }
 
     socket.on('NewTransaction', (transaction) => {
+        console.log('NewTransaction')
         transactions.value.push(transaction)
-        toast.success(`A new transaction was created (#${transaction.id} : ${transaction.name})`)
+        // toast.success(`A new transaction was created (#${transaction.id} : ${transaction.name})`)
     })
+
+    console.log('useTransactionStore')
 
     return {
         createManualTransaction,

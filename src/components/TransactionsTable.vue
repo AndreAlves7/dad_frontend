@@ -50,9 +50,9 @@ onMounted (() => {
 <DataTable v-model:filters="filters" :metaKeySelection="false" :loading="loading" 
     removableSort  v-model:selection="selectedTransaction" :value="transactionStore.transactions"
     stateStorage="session" stateKey="table-vcards" paginator :rows="10" filterDisplay="menu"
-    selectionMode="single" :globalFilterFields="['date', 'value', 'old_balance' , 
+    selectionMode="single" :globalFilterFields="['datetime', 'value', 'old_balance' , 
     'new_balance', 'payment_type', 'payment_reference', 'value']"
-    sortField="date" :sortOrder="-1" >
+    sortField="datetime" :sortOrder="-1" >
     
     <template #header>
         <span class="p-input-icon-left">
@@ -61,10 +61,10 @@ onMounted (() => {
         </span>
     </template>
 
-    <Column field="date" header="Date" sortable filterMatchMode="contains" style="width: 10%">
+    <Column field="datetime" header="Date" sortable filterMatchMode="contains" style="width: 10%">
       <template #body="{ data }">
         <div class="flex align-items-center gap-2">
-          <span>{{ data.date }}</span>
+          <span>{{ data.datetime }}</span>
         </div>
       </template>
     </Column>

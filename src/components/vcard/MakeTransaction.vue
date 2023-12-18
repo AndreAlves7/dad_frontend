@@ -20,7 +20,7 @@
       description: ''
     });
     const categories = ref([]);
-    const selectedCategory = ref(null);
+    const selectedCategory = ref('');
 
     const userStore = useUserStore()
 
@@ -38,13 +38,32 @@
 
     const submitForm = () => {
       errors.value = []
-      //validate 
-      const invalid = validatePaymentRef(selectedType.value.name, form.value.referenceValue)
-      if(invalid){
-        errors.value.push(invalid)
-        return toast.error(invalid)
+
+
+      //verificar se ha algum selectedtype
+      if(!selectedType.value){
+        errors.value.push("You must select a payment type")
+      }else{
+        const invalid = validatePaymentRef(selectedType.value.name, form.value.referenceValue)
+        if(invalid){
+          errors.value.push(invalid)
+        }
       }
 
+
+      //validar se existe saldo suficiente
+      if(value.value > vcardsStore.vcard.balance){
+        errors.value.push("Insufficient funds")
+      }
+
+      //validar se o balance é maior que 0
+      if(value.value <= 0){
+        errors.value.push("The value must be greater than 0")
+      }
+
+      if (errors.value.length > 0) {
+        return toast.error('There are errors in the form')
+      }
 
       axios.post(routes.transactions, {
         vcard: userStore.userId,
@@ -58,6 +77,12 @@
         .then(function (response) {
           console.log(response);
           socket.emit('NewTransaction', response.data)
+          vcardsStore.loadVcard(userStore.userId)
+          //clear form
+          value.value = 0
+          form.value.referenceValue = ''
+          form.value.description = ''
+          selectedType.value = null
           toast.success('Transaction created successfully!')
         })
         .catch(function (error) {
@@ -71,6 +96,11 @@
       console.log(selectedPaymentType)
       console.log(paymentReference)
     switch(selectedPaymentType){
+      case 'VCARD':
+      if(!paymentReference.match(/^9[0-9]{8}$/)) {
+          return "The VCARD payment reference must have 9 digits"
+        }
+        break;
       case 'MBWAY':
         if(!paymentReference.match(/^9[0-9]{8}$/)) {
           return "The MBWAY payment reference must have 9 digits"
@@ -108,6 +138,7 @@
         console.log(response);
         const { data }  = response.data
         const categoriesFiltered = data.filter(category => category.type === 'D')
+        categoriesFiltered.unshift({id: null, name: 'No Category'})
 
         categories.value = categoriesFiltered
       })

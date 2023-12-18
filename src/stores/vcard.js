@@ -1,11 +1,18 @@
-import { ref } from "vue"
+import { ref, inject } from "vue"
 import axios from "axios"
 import { defineStore } from "pinia"
 import routes from "../utils/routes.js"
+import { useUserStore } from "./user.js"
+import { useToast } from "vue-toastification"
+
 
 export const useVcardsStore = defineStore('vcards', () => {
 
     const vcards = ref([])
+    const socket = inject("socket")
+
+    const userStore = useUserStore()
+    const toast = useToast()
 
     const vcard = ref({})
 
@@ -55,6 +62,20 @@ export const useVcardsStore = defineStore('vcards', () => {
         }
         return response.data.data
     }
+
+
+    socket.on('NewTransaction', async (transaction) => {
+        console.log('newTransaction',transaction)
+        console.log(userStore.userId)
+        console.log(userStore.userId)
+        toast.success(`A new transaction was created (#${transaction.id} : ${transaction.name})`)
+        await loadVcard(userStore.userId)
+        
+    })
+    
+
+    console.log('vcards store loaded')
+
 
     return {
         vcards,
