@@ -10,10 +10,12 @@ import InputText from 'primevue/inputtext';
 import { FilterMatchMode  } from 'primevue/api';
 import { useAdminStore } from '../../../stores/admin.js'
 import { useToast } from "vue-toastification"
-
+import { useRouter } from 'vue-router';
 
 const toast = useToast()
 const adminStore = useAdminStore()
+const router = useRouter();
+
 const categories = ref([])
 const showEditPopup = ref(false)
 
@@ -76,6 +78,9 @@ const deleteSelectedRow = async () =>{
     modalDelete.value = true
     };
 
+    const clickCreateButton = () => {
+        router.push({ name: 'DefaultCategoryCreate' })
+    }
 
 </script>
 
@@ -114,7 +119,7 @@ const deleteSelectedRow = async () =>{
         <BIconSearch />
         <InputText v-model="filters['global'].value" placeholder="Keyword Search" />
         </span>
-        <button type="button" class="btn btn-primary">
+        <button type="button" class="btn btn-primary" @click="clickCreateButton()">
         Create Default Category
         </button>
     </div>

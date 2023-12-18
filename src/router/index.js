@@ -9,6 +9,7 @@ import Vcard from "../components/admin/Vcard.vue"
 import Admins from "../components/admin/administrators/Admin.vue"
 import adminCreate from "../components/admin/administrators/adminCreate.vue"
 import AdminCategories from "../components/admin/administrators/AdminCategories.vue"
+import DefaultCategoryCreate from "../components/admin/administrators/DefaultCategoryCreate.vue"
 import CreditTransaction from "../components/admin/transactions/CreditTransactionCreate.vue"
 import Transactions from "../components/TransactionsTable.vue"
 import MakeTransaction from "../components/vcard/MakeTransaction.vue"
@@ -97,6 +98,11 @@ const router = createRouter({
             path: '/vcard/category/add',
             name: 'AddCategory',
             component: CategoryCreate
+        },   
+        {
+            path: '/admin/category/add',
+            name: 'DefaultCategoryCreate',
+            component: DefaultCategoryCreate
         }
     ]
 })
